@@ -1,17 +1,33 @@
-name: "220707_workflowr"
+name: 220707_workflowr
 output_dir: ../docs
 navbar:
-  title: "220707_workflowr"
+  title: 220707_workflowr
   left:
-  - text: Home
+  - text: Contents
     href: index.html
-  - text: About
-    href: about.html
-  - text: License
-    href: license.html
+  - text: Data prep
+    href: 0_prep_data.html
+  - text: QC mask
+    href: 1_QC_mask.html
+  - text: Batch effect_corr
+    href: 2_batch_effect_correction.html
+  - text: Dim red
+    href: 3_dim_red.html
+  - text: Cell pheno
+    href: 4_cell_annotation.html
+  - text: Single cell vis
+    href: 5_sc_vis.html
+  - text: Image vis
+    href: 6_img_vis.html
+  - text: Spatial vis
+    href: 47_spatial_vis.html
+  right:
+  - icon: fab fa-github
+    text: Source code
+    href: https://github.com/tessbrodie/220707_workflowr
 output:
   workflowr::wflow_html:
     toc: yes
     toc_float: yes
-    theme: cosmo
+    theme: flatly
     highlight: textmate
