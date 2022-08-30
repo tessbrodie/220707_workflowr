@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Tess Brodie" />
+
+
+<title>IMC data analysis workflow</title>
+
+<script src="site_libs/header-attrs-2.15/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">220707_workflowr</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Contents</a>
+</li>
+<li>
+  <a href="0_prep_data.html">Data prep</a>
+</li>
+<li>
+  <a href="1_QC_mask.html">QC mask</a>
+</li>
+<li>
+  <a href="2_batch_effect_correction.html">Batch effect_corr</a>
+</li>
+<li>
+  <a href="3_dim_red.html">Dim red</a>
+</li>
+<li>
+  <a href="4_cell_annotation.html">Cell pheno</a>
+</li>
+<li>
+  <a href="5_sc_vis.html">Single cell vis</a>
+</li>
+<li>
+  <a href="6_img_vis.html">Image vis</a>
+</li>
+<li>
+  <a href="47_spatial_vis.html">Spatial vis</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">IMC data analysis workflow</h1>
+<h4 class="author">Tess Brodie</h4>
+<h4 class="date">University of Bern, DBMR, Visceral and Transplantation
+Surgery lab</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2022-08-30
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 2
+</p>
+<p>
+<strong>Knit directory:</strong> <code>220707_workflowr/</code> <span
+class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.0). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20220718code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20220718)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20220718code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20220718)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongdetected">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>Cache:</strong> detected </a>
+</p>
+</div>
+<div id="strongCachestrongdetected" class="panel-collapse collapse">
+<div class="panel-body">
+The following chunks had caches available:
+<ul>
+<li>
+barplot_patientID_count
+</li>
+<li>
+barplot_patientID_percentage
+</li>
+<li>
+barplot_sampleID
+</li>
+<li>
+CATALST_setup
+</li>
+<li>
+heatmap_cellsaggreg_minmax
+</li>
+<li>
+heatmap_cellsaggregated
+</li>
+<li>
+heatmap_singlecell
+</li>
+<li>
+load-libs
+</li>
+<li>
+load data
+</li>
+<li>
+MDS_plot_celltype
+</li>
+<li>
+MDS_plot_celltype_sampleID
+</li>
+<li>
+MDS_plot_sampleID_1
+</li>
+<li>
+MDS_plot_sampleID_2
+</li>
+<li>
+scatterplot
+</li>
+<li>
+session-info-chunk-inserted-by-workflowr
+</li>
+<li>
+UMAP_all targets
+</li>
+<li>
+Umap_celltype_overlay
+</li>
+<li>
+unnamed-chunk-1
+</li>
+<li>
+violinplot_expression
+</li>
+</ul>
+<p>To ensure reproducibility of the results, delete the cache directory
+<code>5_sc_vis_cache</code> and re-run the analysis. To have workflowr
+automatically delete the cache directory prior to building the file, set
+<code>delete_cache = TRUE</code> when running <code>wflow_build()</code>
+or <code>wflow_publish()</code>.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongabsolute">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>File paths:</strong> absolute </a>
+</p>
+</div>
+<div id="strongFilepathsstrongabsolute" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Using absolute paths to the files within your workflowr project makes it
+difficult for you and others to run your code on a different machine.
+Change the absolute path(s) below to the suggested relative path(s) to
+make your code more reproducible.
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+absolute
+</th>
+<th style="text-align:left;">
+relative
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+C:/Users/IMC Platform
+laptop/Users2/Tess/SteinbockCellSegmentation/220707/220707_workflowr
+</td>
+<td style="text-align:left;">
+.
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongdb869f5">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong> db869f5
+</a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongdb869f5"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version db869f5.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    analysis/.Rhistory
+    Ignored:    analysis/0_prep_data_cache/
+    Ignored:    analysis/1_QC_mask_cache/
+    Ignored:    analysis/2_batch_effect_correction_cache/
+    Ignored:    analysis/3_dim_red_cache/
+    Ignored:    analysis/4_cell_annotation_cache/
+    Ignored:    analysis/5_sc_vis_cache/
+    Ignored:    analysis/6_img_vis_cache/
+    Ignored:    analysis/7_spatial_vis_cache/
+
+Untracked files:
+    Untracked:  Rplot.png
+    Untracked:  UMAP_correctedvalues.pdf
+    Untracked:  Umap_celltype_overlay.pdf
+    Untracked:  allchannels_histogram.pdf
+    Untracked:  allchannels_multidimplot.pdf
+    Untracked:  alldata_lsecs.rds
+    Untracked:  data/Joseentraining/
+    Untracked:  data/Macro.ijm.ijm.ijm
+    Untracked:  data/cellpose png masks/
+    Untracked:  data/cluster_annotation.png
+    Untracked:  data/cluster_annotation.xlsx
+    Untracked:  data/fiji composite images/
+    Untracked:  data/images.csv
+    Untracked:  data/images.rds
+    Untracked:  data/img/
+    Untracked:  data/intensities/
+    Untracked:  data/masks.rds
+    Untracked:  data/masks/
+    Untracked:  data/neighbors/
+    Untracked:  data/panel.csv
+    Untracked:  data/raw/
+    Untracked:  data/regionprops/
+    Untracked:  data/sample_metadata.xlsx
+    Untracked:  data/spe.rds
+    Untracked:  gated_cells/
+    Untracked:  gated_cells2/
+    Untracked:  marker_umap_corrected.png
+    Untracked:  output/spe0.rds
+    Untracked:  output/spe1.rds
+    Untracked:  output/spe2.rds
+    Untracked:  output/spe3.rds
+    Untracked:  output/spe4.rds
+
+Unstaged changes:
+    Modified:   analysis/_site.yml
+    Deleted:    analysis/about.Rmd
+    Deleted:    analysis/license.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were
+made to the R Markdown (<code>analysis/5_sc_vis.Rmd</code>) and HTML
+(<code>docs/5_sc_vis.html</code>) files. If you’ve configured a remote
+Git repository (see <code>?wflow_git_remote</code>), click on the
+hyperlinks in the table below to view the files as they were in that
+past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+db869f5
+</td>
+<td>
+tessbrodie
+</td>
+<td>
+2022-08-30
+</td>
+<td>
+Publish the initial files for myproject
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="single-cell-visualization" class="section level1">
+<h1>Single cell visualization</h1>
+<style type="text/css">
+.scroll-100 {
+  max-height: 100px;
+  overflow-y: auto;
+  background-color: inherit;
+}
+</style>
+<div id="load-packages" class="section level3">
+<h3>Load packages</h3>
+<pre class="r"><code>library(SpatialExperiment)
+library(cytomapper)
+library(dittoSeq)
+library(scater)
+library(patchwork)
+library(cowplot)
+library(viridis)
+library(scuttle)
+library(CATALYST)
+library(ComplexHeatmap)
+library(circlize)
+library(tidyverse)</code></pre>
+</div>
+<div id="load-data" class="section level3">
+<h3>load data</h3>
+<pre class="r"><code>spe &lt;- readRDS(&quot;output/spe4.rds&quot;)
+
+# Define cell_type_markers 
+type_markers &lt;- c(&quot;E-cadherin&quot;, &quot;Arginase-1&quot;, &quot;CD19&quot;, &quot;CD3e&quot;, &quot;Pan-actin&quot;, &quot;CD206&quot;, &quot;HNFa&quot;, &quot;a-SMA&quot;, &quot;CD8a&quot;, &quot;CD4&quot;, &quot;CD11b&quot;, &quot;Ly6G&quot;, &quot;CD31&quot;, &quot;F4_80&quot;)
+
+# Define cell_state_markers 
+state_markers &lt;- c(&quot;Ki-67&quot;, &quot;CD44&quot;, &quot;CD74&quot;)
+
+# Add to spe
+rowData(spe)$marker_class &lt;- ifelse(rownames(spe) %in% type_markers, &quot;type&quot;,
+                                    ifelse(rownames(spe) %in% state_markers, &quot;state&quot;, 
+                                    &quot;other&quot;))</code></pre>
+</div>
+<div id="cell-type-dimensionality-reduction" class="section level3">
+<h3>Cell Type: Dimensionality reduction</h3>
+<pre class="r"><code>## UMAP colored by cell type and expression - dittoDimPlot
+#pdf(&quot;Umap_celltype_overlay.pdf&quot;, width = 15, height = 20)
+
+p1 &lt;- dittoDimPlot(spe, var = &quot;celltype&quot;, 
+             reduction.use = &quot;UMAP&quot;, size = 0.2,
+             do.label = TRUE) +
+  #scale_color_manual(values = metadata(spe)$color_vectors$celltype) +
+  theme(legend.title = element_blank()) +
+  ggtitle(&quot;Cell types on UMAP&quot;)
+
+p1</code></pre>
+<p><img src="figure/5_sc_vis.Rmd/Umap_celltype_overlay-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p2 &lt;- dittoDimPlot(spe, var = &quot;E-cadherin&quot;, assay = &quot;exprs&quot;,
+             reduction.use = &quot;UMAP&quot;, size = 0.2, 
+             colors = viridis(100), do.label = TRUE) +
+    scale_color_viridis()</code></pre>
+<pre><code>do.label was/were ignored for non-discrete data.</code></pre>
+<pre><code>Scale for &#39;colour&#39; is already present. Adding another scale for &#39;colour&#39;,
+which will replace the existing scale.</code></pre>
+<pre class="r"><code>p2</code></pre>
+<p><img src="figure/5_sc_vis.Rmd/Umap_celltype_overlay-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>p1 + p2</code></pre>
+<p><img src="figure/5_sc_vis.Rmd/Umap_celltype_overlay-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#dev.off()</code></pre>
+<pre class="r"><code># UMAP colored by expression for all markers - plotReducedDim
+plot_list  &lt;- lapply(rownames(spe)[rowData(spe)$marker_class == &quot;type&quot;], function(x){
+                      p &lt;- plotReducedDim(spe, dimred = &quot;UMAP&quot;,
+                                          colour_by = x,
+                                          by_exprs_values = &quot;exprs&quot;,
+                                          point_size = 0.2)
+                      return(p)
+                    })
+
+plot_grid(plotlist = plot_list)</code></pre>
+<p><img src="figure/5_sc_vis.Rmd/UMAP_all targets-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="heatmap-visualization" class="section level3">
+<h3>Heatmap visualization</h3>
+<pre class="r"><code>cur_cells &lt;- sample(seq_len(ncol(spe)), 4000)
+
+#Heatmap visualization - DittoHeatmap
+dittoHeatmap(spe[,cur_cells], genes = rownames(spe)[rowData(spe)$marker_class == &quot;type&quot;],
+             assay = &quot;exprs&quot;, order.by = c(&quot;celltype&quot;),
+             cluster_cols = FALSE, scale = &quot;none&quot;,
+             heatmap.colors = viridis(100), annot.by = c(&quot;celltype&quot;,&quot;condition&quot;,&quot;patient_id&quot;),
+             #annotation_colors = list(indication = metadata(spe)$color_vectors$indication,
+                                      patient_id = metadata(spe)$color_vectors$patient_id,
+                                      celltype = metadata(spe)$color_vectors$celltype)</code></pre>
+<p><img src="figure/5_sc_vis.Rmd/heatmap_singlecell-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>## by cell type
+celltype_mean &lt;- aggregateAcrossCells(as(spe, &quot;SingleCellExperiment&quot;),  
+                     ids = spe$celltype, 
+                     statistics = &quot;mean&quot;,
+                     use.assay.type = &quot;exprs&quot;, 
+                     subset.row = rownames(spe)[rowData(spe)$marker_class == &quot;type&quot;]
+                     )
+
+# No scaling
+dittoHeatmap(celltype_mean,
+             assay = &quot;exprs&quot;, cluster_cols = TRUE, 
+             scale = &quot;none&quot;,
+             heatmap.colors = viridis(100),
+             annot.by = c(&quot;celltype&quot;,&quot;ncells&quot;))</code></pre>
+<p><img src="figure/5_sc_vis.Rmd/heatmap_cellsaggregated-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>             #annotation_colors = list(celltype = metadata(spe)$color_vectors$celltype,
+             #                         ncells = plasma(100)))</code></pre>
+<pre class="r"><code># Min-max expression scaling
+dittoHeatmap(celltype_mean,
+             assay = &quot;exprs&quot;, cluster_cols = TRUE, 
+             scaled.to.max = TRUE,
+             heatmap.colors.max.scaled = inferno(100),
+             annot.by = c(&quot;celltype&quot;,&quot;ncells&quot;))</code></pre>
+<p><img src="figure/5_sc_vis.Rmd/heatmap_cellsaggreg_minmax-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>             #annotation_colors = list(celltype = metadata(spe)$color_vectors$celltype,
+              #                        ncells = plasma(100)))</code></pre>
+</div>
+<div id="violin-plot-visualization" class="section level3">
+<h3>Violin plot visualization</h3>
+<pre class="r"><code>#Violin Plot - plotExpression
+plotExpression(spe[,cur_cells], 
+               features = rownames(spe)[rowData(spe)$marker_class == &quot;type&quot;],
+               x = &quot;celltype&quot;, exprs_values = &quot;exprs&quot;, 
+               colour_by = &quot;celltype&quot;) +
+    theme(axis.text.x =  element_text(angle = 90))</code></pre>
+<p><img src="figure/5_sc_vis.Rmd/violinplot_expression-1.png" width="768" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>    #scale_color_manual(values = metadata(spe)$color_vectors$celltype)</code></pre>
+</div>
+<div id="scatter-plot-visualization" class="section level3">
+<h3>Scatter plot visualization</h3>
+<pre class="r"><code>#Scatter plot
+dittoScatterPlot(spe, 
+                 x.var = &quot;CD3e&quot;, y.var=&quot;CD19&quot;, 
+                 assay.x = &quot;exprs&quot;, assay.y = &quot;exprs&quot;, 
+                 color.var = &quot;celltype&quot;) +
+    #scale_color_manual(values = metadata(spe)$color_vectors$celltype) +
+    ggtitle(&quot;Scatterplot for CD3/CD20 labelled by celltype&quot;)</code></pre>
+<p><img src="figure/5_sc_vis.Rmd/scatterplot-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="barplot-visualization" class="section level3">
+<h3>Barplot visualization</h3>
+<pre class="r"><code># by sample_id
+dittoBarPlot(spe, var = &quot;celltype&quot;, group.by = &quot;sample_id&quot;) </code></pre>
+<p><img src="figure/5_sc_vis.Rmd/barplot_sampleID-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>    #scale_fill_manual(values = metadata(spe)$color_vectors$celltype)</code></pre>
+<pre class="r"><code># by patient_id - percentage
+dittoBarPlot(spe, var = &quot;celltype&quot;, group.by = &quot;patient_id&quot;) </code></pre>
+<p><img src="figure/5_sc_vis.Rmd/barplot_patientID_percentage-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>    #scale_fill_manual(values = metadata(spe)$color_vectors$celltype)</code></pre>
+<pre class="r"><code># by patient_id - count
+dittoBarPlot(spe, scale = &quot;count&quot;, var = &quot;celltype&quot;, group.by = &quot;patient_id&quot;) </code></pre>
+<p><img src="figure/5_sc_vis.Rmd/barplot_patientID_count-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>    #scale_fill_manual(values = metadata(spe)$color_vectors$celltype)</code></pre>
+</div>
+<div id="catalyst-pseudobulk-level-mds-plots" class="section level3">
+<h3>CATALYST Pseudobulk-level MDS plots</h3>
+<pre class="r"><code># save spe in CATALYST-compatible object with renamed colData entries and 
+# new metadata information
+spe_cat &lt;- spe 
+
+spe_cat$sample_id &lt;- factor(spe$sample_id)
+spe_cat$condition &lt;- factor(spe$condition)
+spe_cat$cluster_id &lt;- factor(spe$celltype)
+
+#add celltype information to metadata
+metadata(spe_cat)$cluster_codes &lt;- data.frame(celltype = factor(spe_cat$celltype))</code></pre>
+<pre class="r"><code># MDS pseudobulk by cell type
+pbMDS(spe_cat, by = &quot;cluster_id&quot;, 
+      features = rownames(spe_cat)[rowData(spe_cat)$marker_class == &quot;type&quot;], 
+      label_by = &quot;cluster_id&quot;, k = &quot;celltype&quot;) </code></pre>
+<p><img src="figure/5_sc_vis.Rmd/MDS_plot_celltype-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>  #scale_color_manual(values = metadata(spe_cat)$color_vectors$celltype)</code></pre>
+<pre class="r"><code># MDS pseudobulk by cell type and sample_id
+pbMDS(spe_cat, by = &quot;both&quot;, 
+      features = rownames(spe_cat)[rowData(spe_cat)$marker_class == &quot;type&quot;], 
+      k = &quot;celltype&quot;, shape_by = &quot;condition&quot;, 
+      size_by = TRUE) </code></pre>
+<p><img src="figure/5_sc_vis.Rmd/MDS_plot_celltype_sampleID-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>  #scale_color_manual(values = metadata(spe_cat)$color_vectors$celltype)</code></pre>
+<pre class="r"><code># MDS pseudobulk by sample_id 
+pbMDS(spe_cat, by = &quot;sample_id&quot;, 
+      color_by = &quot;sample_id&quot;, 
+      features = rownames(spe_cat)[rowData(spe_cat)$marker_class == &quot;type&quot;]) </code></pre>
+<p><img src="figure/5_sc_vis.Rmd/MDS_plot_sampleID_1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>  #scale_color_manual(values = metadata(spe_cat)$color_vectors$sample_id)</code></pre>
+</div>
+<div id="pseudobulk-expression-boxplot" class="section level3">
+<h3>Pseudobulk expression boxplot</h3>
+<pre class="r"><code>plotPbExprs(spe_cat, k = &quot;celltype&quot;, 
+            facet_by = &quot;cluster_id&quot;, ncol = 4, 
+            features = rownames(spe_cat)[rowData(spe_cat)$marker_class == &quot;type&quot;]) </code></pre>
+<p><img src="figure/5_sc_vis.Rmd/MDS_plot_sampleID_2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>    #scale_color_manual(values = metadata(spe_cat)$color_vectors$indication)</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.2.1 (2022-06-23 ucrt)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 19044)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_Switzerland.utf8  LC_CTYPE=English_Switzerland.utf8   
+[3] LC_MONETARY=English_Switzerland.utf8 LC_NUMERIC=C                        
+[5] LC_TIME=English_Switzerland.utf8    
+
+attached base packages:
+[1] grid      stats4    stats     graphics  grDevices utils     datasets 
+[8] methods   base     
+
+other attached packages:
+ [1] forcats_0.5.1               stringr_1.4.0              
+ [3] dplyr_1.0.9                 purrr_0.3.4                
+ [5] readr_2.1.2                 tidyr_1.2.0                
+ [7] tibble_3.1.7                tidyverse_1.3.2            
+ [9] circlize_0.4.15             ComplexHeatmap_2.12.1      
+[11] CATALYST_1.20.1             viridis_0.6.2              
+[13] viridisLite_0.4.0           cowplot_1.1.1              
+[15] patchwork_1.1.2             scater_1.24.0              
+[17] scuttle_1.6.2               dittoSeq_1.8.1             
+[19] ggplot2_3.3.6               cytomapper_1.8.0           
+[21] EBImage_4.38.0              SpatialExperiment_1.6.0    
+[23] SingleCellExperiment_1.18.0 SummarizedExperiment_1.26.1
+[25] Biobase_2.56.0              GenomicRanges_1.48.0       
+[27] GenomeInfoDb_1.32.2         IRanges_2.30.0             
+[29] S4Vectors_0.34.0            BiocGenerics_0.42.0        
+[31] MatrixGenerics_1.8.1        matrixStats_0.62.0         
+[33] workflowr_1.7.0            
+
+loaded via a namespace (and not attached):
+  [1] scattermore_0.8             flowWorkspace_4.8.0        
+  [3] R.methodsS3_1.8.2           knitr_1.39                 
+  [5] irlba_2.3.5                 multcomp_1.4-20            
+  [7] DelayedArray_0.22.0         R.utils_2.12.0             
+  [9] data.table_1.14.2           RCurl_1.98-1.7             
+ [11] doParallel_1.0.17           generics_0.1.3             
+ [13] flowCore_2.8.0              ScaledMatrix_1.4.0         
+ [15] TH.data_1.1-1               callr_3.7.2                
+ [17] terra_1.5-34                ggpointdensity_0.1.0       
+ [19] tzdb_0.3.0                  lubridate_1.8.0            
+ [21] xml2_1.3.3                  httpuv_1.6.5               
+ [23] assertthat_0.2.1            gargle_1.2.0               
+ [25] xfun_0.31                   hms_1.1.2                  
+ [27] jquerylib_0.1.4             evaluate_0.16              
+ [29] promises_1.2.0.1            fansi_1.0.3                
+ [31] readxl_1.4.0                dbplyr_2.2.1               
+ [33] Rgraphviz_2.40.0            igraph_1.3.4               
+ [35] DBI_1.1.3                   htmlwidgets_1.5.4          
+ [37] googledrive_2.0.0           ellipsis_0.3.2             
+ [39] ggcyto_1.24.1               ggnewscale_0.4.7           
+ [41] ggpubr_0.4.0                backports_1.4.1            
+ [43] cytolib_2.8.0               svgPanZoom_0.3.4           
+ [45] RcppParallel_5.1.5          deldir_1.0-6               
+ [47] sparseMatrixStats_1.8.0     vctrs_0.4.1                
+ [49] abind_1.4-5                 cachem_1.0.6               
+ [51] withr_2.5.0                 ggforce_0.3.3              
+ [53] aws.signature_0.6.0         svglite_2.1.0              
+ [55] cluster_2.1.3               crayon_1.5.1               
+ [57] drc_3.0-1                   labeling_0.4.2             
+ [59] edgeR_3.38.1                pkgconfig_2.0.3            
+ [61] tweenr_1.0.2                vipor_0.4.5                
+ [63] rlang_1.0.4                 lifecycle_1.0.1            
+ [65] sandwich_3.0-2              modelr_0.1.9               
+ [67] rsvd_1.0.5                  cellranger_1.1.0           
+ [69] rprojroot_2.0.3             polyclip_1.10-0            
+ [71] graph_1.74.0                tiff_0.1-11                
+ [73] Matrix_1.4-1                raster_3.5-21              
+ [75] carData_3.0-5               zoo_1.8-10                 
+ [77] Rhdf5lib_1.18.2             reprex_2.0.2               
+ [79] base64enc_0.1-3             beeswarm_0.4.0             
+ [81] googlesheets4_1.0.1         whisker_0.4                
+ [83] ggridges_0.5.3              GlobalOptions_0.1.2        
+ [85] processx_3.7.0              pheatmap_1.0.12            
+ [87] png_0.1-7                   rjson_0.2.21               
+ [89] bitops_1.0-7                shinydashboard_0.7.2       
+ [91] getPass_0.2-2               R.oo_1.25.0                
+ [93] ConsensusClusterPlus_1.60.0 rhdf5filters_1.8.0         
+ [95] DelayedMatrixStats_1.18.0   shape_1.4.6                
+ [97] jpeg_0.1-9                  rstatix_0.7.0              
+ [99] ggsignif_0.6.3              aws.s3_0.3.21              
+[101] beachmat_2.12.0             scales_1.2.1               
+[103] magrittr_2.0.3              plyr_1.8.7                 
+[105] hexbin_1.28.2               zlibbioc_1.42.0            
+[107] compiler_4.2.1              dqrng_0.3.0                
+[109] RColorBrewer_1.1-3          plotrix_3.8-2              
+[111] clue_0.3-61                 cli_3.3.0                  
+[113] XVector_0.36.0              ncdfFlow_2.42.1            
+[115] ps_1.7.1                    FlowSOM_2.4.0              
+[117] MASS_7.3-58                 tidyselect_1.1.2           
+[119] stringi_1.7.8               RProtoBufLib_2.8.0         
+[121] highr_0.9                   yaml_2.3.5                 
+[123] BiocSingular_1.12.0         locfit_1.5-9.6             
+[125] latticeExtra_0.6-30         ggrepel_0.9.1              
+[127] sass_0.4.2                  tools_4.2.1                
+[129] parallel_4.2.1              CytoML_2.8.0               
+[131] rstudioapi_0.14             foreach_1.5.2              
+[133] git2r_0.30.1                gridExtra_2.3              
+[135] farver_2.1.1                Rtsne_0.16                 
+[137] DropletUtils_1.16.0         digest_0.6.29              
+[139] shiny_1.7.2                 Rcpp_1.0.9                 
+[141] car_3.1-0                   broom_1.0.0                
+[143] later_1.3.0                 httr_1.4.4                 
+[145] colorspace_2.0-3            rvest_1.0.3                
+[147] XML_3.99-0.10               fs_1.5.2                   
+[149] splines_4.2.1               RBGL_1.72.0                
+[151] sp_1.5-0                    systemfonts_1.0.4          
+[153] xtable_1.8-4                jsonlite_1.8.0             
+[155] R6_2.5.1                    pillar_1.8.1               
+[157] htmltools_0.5.3             mime_0.12                  
+[159] nnls_1.4                    glue_1.6.2                 
+[161] fastmap_1.1.0               BiocParallel_1.30.3        
+[163] BiocNeighbors_1.14.0        fftwtools_0.9-11           
+[165] codetools_0.2-18            mvtnorm_1.1-3              
+[167] utf8_1.2.2                  lattice_0.20-45            
+[169] bslib_0.4.0                 curl_4.3.2                 
+[171] ggbeeswarm_0.6.0            colorRamps_2.3.1           
+[173] gtools_3.9.3                magick_2.7.3               
+[175] interp_1.1-3                survival_3.3-1             
+[177] limma_3.52.2                rmarkdown_2.15             
+[179] munsell_0.5.0               GetoptLong_1.0.5           
+[181] rhdf5_2.40.0                GenomeInfoDbData_1.2.8     
+[183] iterators_1.0.14            HDF5Array_1.24.1           
+[185] haven_2.5.0                 reshape2_1.4.4             
+[187] gtable_0.3.0               </code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
