@@ -36,6 +36,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -365,7 +367,13 @@ div.tocify {
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/tessbrodie/220707_workflowr">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -411,9 +419,9 @@ aria-hidden="true"></span> </a>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 2
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>220707_workflowr/</code> <span
@@ -507,66 +515,16 @@ versions is critical for reproducibility.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongdetected">
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> <strong>Cache:</strong> detected </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
 </p>
 </div>
-<div id="strongCachestrongdetected" class="panel-collapse collapse">
+<div id="strongCachestrongnone" class="panel-collapse collapse">
 <div class="panel-body">
-The following chunks had caches available:
-<ul>
-<li>
-boxplots
-</li>
-<li>
-check performance
-</li>
-<li>
-classify new data
-</li>
-<li>
-colors
-</li>
-<li>
-cytomapperShiny
-</li>
-<li>
-heatmap
-</li>
-<li>
-load-libs
-</li>
-<li>
-load data
-</li>
-<li>
-mean marker expression across samples
-</li>
-<li>
-read in data
-</li>
-<li>
-save spe4
-</li>
-<li>
-session-info-chunk-inserted-by-workflowr
-</li>
-<li>
-Train classifier
-</li>
-<li>
-unnamed-chunk-1
-</li>
-<li>
-visualize performance
-</li>
-</ul>
-<p>To ensure reproducibility of the results, delete the cache directory
-<code>4_cell_annotation_cache</code> and re-run the analysis. To have
-workflowr automatically delete the cache directory prior to building the
-file, set <code>delete_cache = TRUE</code> when running
-<code>wflow_build()</code> or <code>wflow_publish()</code>.</p>
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
 </div>
 </div>
 </div>
@@ -615,13 +573,15 @@ laptop/Users2/Tess/SteinbockCellSegmentation/220707/220707_workflowr
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongdb869f5">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtessbrodie220707workflowrtreec445d7e066101dc1943e41240e4369e6ec7f1bb5targetblankc445d7ea">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> db869f5
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/tessbrodie/220707_workflowr/tree/c445d7e066101dc1943e41240e4369e6ec7f1bb5" target="_blank">c445d7e</a>
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongdb869f5"
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomtessbrodie220707workflowrtreec445d7e066101dc1943e41240e4369e6ec7f1bb5targetblankc445d7ea"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -630,7 +590,8 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version db869f5.
+The results in this page were generated with repository version
+<a href="https://github.com/tessbrodie/220707_workflowr/tree/c445d7e066101dc1943e41240e4369e6ec7f1bb5" target="_blank">c445d7e</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -652,7 +613,6 @@ Ignored files:
     Ignored:    analysis/1_QC_mask_cache/
     Ignored:    analysis/2_batch_effect_correction_cache/
     Ignored:    analysis/3_dim_red_cache/
-    Ignored:    analysis/4_cell_annotation_cache/
     Ignored:    analysis/5_sc_vis_cache/
     Ignored:    analysis/6_img_vis_cache/
     Ignored:    analysis/7_spatial_vis_cache/
@@ -692,7 +652,6 @@ Untracked files:
     Untracked:  output/spe4.rds
 
 Unstaged changes:
-    Modified:   analysis/_site.yml
     Deleted:    analysis/about.Rmd
     Deleted:    analysis/license.Rmd
 
@@ -742,10 +701,27 @@ Message
 <tbody>
 <tr>
 <td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/tessbrodie/220707_workflowr/41ee8fb368b033aa1135014fe5caf3b1579f3537/docs/4_cell_annotation.html" target="_blank">41ee8fb</a>
+</td>
+<td>
+tessbrodie
+</td>
+<td>
+2022-08-30
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
 Rmd
 </td>
 <td>
-db869f5
+<a href="https://github.com/tessbrodie/220707_workflowr/blob/db869f5c0a659c2858b5d9be7c6532f1530185af/analysis/4_cell_annotation.Rmd" target="_blank">db869f5</a>
 </td>
 <td>
 tessbrodie
@@ -944,9 +920,9 @@ The final value used for the model was mtry = 17.</code></pre>
                     ymax = Accuracy + AccuracySD),
                 width = 0.4) +
     theme_classic(base_size = 15)</code></pre>
-<p><img src="figure/4_cell_annotation.Rmd/check performance-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/4_cell_annotation.Rmd/check%20performance-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot(varImp(rffit))</code></pre>
-<p><img src="figure/4_cell_annotation.Rmd/check performance-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/4_cell_annotation.Rmd/check%20performance-2.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># Select test data
 cur_mat &lt;- t(assay(test_spe, &quot;exprs&quot;))
 
@@ -1025,7 +1001,7 @@ Balanced Accuracy        0.98582     0.9984    0.9943      0.9987       0.97591<
   theme_classic(base_size = 15) + 
   ylab(&quot;Sensitivity (TPR)&quot;) +
   xlab(&quot;1 - Specificity (FPR)&quot;)</code></pre>
-<p><img src="figure/4_cell_annotation.Rmd/visualize performance-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/4_cell_annotation.Rmd/visualize%20performance-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>cur_pred &lt;- predict(rffit, 
                     newdata = cur_mat, 
                     type = &quot;prob&quot;)
@@ -1069,7 +1045,7 @@ tibble(max_prob = rowMax(as.matrix(cell_prob)),
         ylab(&quot;Cell type&quot;) + 
         xlim(c(0,1.2))</code></pre>
 <pre><code>Picking joint bandwidth of 0.0584</code></pre>
-<p><img src="figure/4_cell_annotation.Rmd/classify new data-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/4_cell_annotation.Rmd/classify%20new%20data-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># Label undefined cells
 cell_class[rowMax(as.matrix(cell_prob)) &lt; 0.4] &lt;- &quot;undefined&quot;
 
@@ -1207,78 +1183,80 @@ loaded via a namespace (and not attached):
  [55] aws.signature_0.6.0       ggforce_0.3.3            
  [57] RBGL_1.72.0               plyr_1.8.7               
  [59] cellranger_1.1.0          ncdfFlow_2.42.1          
- [61] hardhat_1.2.0             dqrng_0.3.0              
- [63] pROC_1.18.0               pillar_1.8.1             
- [65] RcppParallel_5.1.5        GlobalOptions_0.1.2      
- [67] cachem_1.0.6              multcomp_1.4-20          
- [69] fs_1.5.2                  CytoML_2.8.0             
- [71] raster_3.5-21             GetoptLong_1.0.5         
- [73] DelayedMatrixStats_1.18.0 vctrs_0.4.1              
- [75] ellipsis_0.3.2            generics_0.1.3           
- [77] lava_1.6.10               tools_4.2.1              
- [79] beeswarm_0.4.0            munsell_0.5.0            
- [81] tweenr_1.0.2              aws.s3_0.3.21            
- [83] DelayedArray_0.22.0       fastmap_1.1.0            
- [85] compiler_4.2.1            abind_1.4-5              
- [87] httpuv_1.6.5              GenomeInfoDbData_1.2.8   
- [89] prodlim_2019.11.13        edgeR_3.38.1             
- [91] ggnewscale_0.4.7          ggpointdensity_0.1.0     
- [93] deldir_1.0-6              utf8_1.2.2               
- [95] later_1.3.0               recipes_1.0.1            
- [97] jsonlite_1.8.0            scales_1.2.1             
- [99] graph_1.74.0              ScaledMatrix_1.4.0       
-[101] carData_3.0-5             sparseMatrixStats_1.8.0  
-[103] promises_1.2.0.1          car_3.1-0                
-[105] doParallel_1.0.17         latticeExtra_0.6-30      
-[107] R.utils_2.12.0            rmarkdown_2.15           
-[109] sandwich_3.0-2            cowplot_1.1.1            
-[111] statmod_1.4.37            Rtsne_0.16               
-[113] HDF5Array_1.24.1          survival_3.3-1           
-[115] yaml_2.3.5                plotrix_3.8-2            
-[117] systemfonts_1.0.4         cytolib_2.8.0            
-[119] flowWorkspace_4.8.0       htmltools_0.5.3          
-[121] locfit_1.5-9.6            digest_0.6.29            
-[123] assertthat_0.2.1          mime_0.12                
-[125] tiff_0.1-11               future.apply_1.9.0       
-[127] data.table_1.14.2         R.oo_1.25.0              
-[129] flowCore_2.8.0            drc_3.0-1                
-[131] splines_4.2.1             Rhdf5lib_1.18.2          
-[133] googledrive_2.0.0         RCurl_1.98-1.7           
-[135] broom_1.0.0               hms_1.1.2                
-[137] modelr_0.1.9              rhdf5_2.40.0             
-[139] colorspace_2.0-3          DropletUtils_1.16.0      
-[141] base64enc_0.1-3           ggbeeswarm_0.6.0         
-[143] shape_1.4.6               nnet_7.3-17              
-[145] sass_0.4.2                Rcpp_1.0.9               
-[147] RANN_2.6.1                mvtnorm_1.1-3            
-[149] circlize_0.4.15           FlowSOM_2.4.0            
-[151] RProtoBufLib_2.8.0        fansi_1.0.3              
-[153] tzdb_0.3.0                parallelly_1.32.1        
-[155] ModelMetrics_1.2.2.2      R6_2.5.1                 
-[157] grid_4.2.1                lifecycle_1.0.1          
-[159] curl_4.3.2                ggsignif_0.6.3           
-[161] googlesheets4_1.0.1       jquerylib_0.1.4          
-[163] TH.data_1.1-1             RColorBrewer_1.1-3       
-[165] iterators_1.0.14          gower_1.0.0              
-[167] svgPanZoom_0.3.4          htmlwidgets_1.5.4        
-[169] beachmat_2.12.0           polyclip_1.10-0          
-[171] terra_1.5-34              rvest_1.0.3              
-[173] ComplexHeatmap_2.12.1     globals_0.16.0           
-[175] codetools_0.2-18          lubridate_1.8.0          
-[177] metapod_1.4.0             gtools_3.9.3             
-[179] getPass_0.2-2             dbplyr_2.2.1             
-[181] R.methodsS3_1.8.2         gtable_0.3.0             
-[183] DBI_1.1.3                 git2r_0.30.1             
-[185] httr_1.4.4                highr_0.9                
-[187] stringi_1.7.8             reshape2_1.4.4           
-[189] farver_2.1.1              hexbin_1.28.2            
-[191] Rgraphviz_2.40.0          magick_2.7.3             
-[193] timeDate_4021.104         xml2_1.3.3               
-[195] colorRamps_2.3.1          ggcyto_1.24.1            
-[197] BiocNeighbors_1.14.0      interp_1.1-3             
-[199] scattermore_0.8           jpeg_0.1-9               
-[201] pkgconfig_2.0.3           gargle_1.2.0             
-[203] rstatix_0.7.0             knitr_1.39               </code></pre>
+ [61] hardhat_1.2.0             e1071_1.7-11             
+ [63] dqrng_0.3.0               pROC_1.18.0              
+ [65] pillar_1.8.1              RcppParallel_5.1.5       
+ [67] GlobalOptions_0.1.2       cachem_1.0.6             
+ [69] multcomp_1.4-20           fs_1.5.2                 
+ [71] CytoML_2.8.0              raster_3.5-21            
+ [73] GetoptLong_1.0.5          DelayedMatrixStats_1.18.0
+ [75] vctrs_0.4.1               ellipsis_0.3.2           
+ [77] generics_0.1.3            lava_1.6.10              
+ [79] tools_4.2.1               beeswarm_0.4.0           
+ [81] munsell_0.5.0             tweenr_1.0.2             
+ [83] proxy_0.4-27              aws.s3_0.3.21            
+ [85] DelayedArray_0.22.0       fastmap_1.1.0            
+ [87] compiler_4.2.1            abind_1.4-5              
+ [89] httpuv_1.6.5              GenomeInfoDbData_1.2.8   
+ [91] prodlim_2019.11.13        edgeR_3.38.1             
+ [93] ggnewscale_0.4.7          ggpointdensity_0.1.0     
+ [95] deldir_1.0-6              utf8_1.2.2               
+ [97] later_1.3.0               recipes_1.0.1            
+ [99] jsonlite_1.8.0            scales_1.2.1             
+[101] graph_1.74.0              ScaledMatrix_1.4.0       
+[103] carData_3.0-5             sparseMatrixStats_1.8.0  
+[105] promises_1.2.0.1          car_3.1-0                
+[107] doParallel_1.0.17         latticeExtra_0.6-30      
+[109] R.utils_2.12.0            rmarkdown_2.15           
+[111] sandwich_3.0-2            cowplot_1.1.1            
+[113] statmod_1.4.37            Rtsne_0.16               
+[115] HDF5Array_1.24.1          survival_3.3-1           
+[117] yaml_2.3.5                plotrix_3.8-2            
+[119] systemfonts_1.0.4         cytolib_2.8.0            
+[121] flowWorkspace_4.8.0       htmltools_0.5.3          
+[123] locfit_1.5-9.6            digest_0.6.29            
+[125] assertthat_0.2.1          mime_0.12                
+[127] tiff_0.1-11               future.apply_1.9.0       
+[129] data.table_1.14.2         R.oo_1.25.0              
+[131] flowCore_2.8.0            drc_3.0-1                
+[133] labeling_0.4.2            splines_4.2.1            
+[135] Rhdf5lib_1.18.2           googledrive_2.0.0        
+[137] RCurl_1.98-1.7            broom_1.0.0              
+[139] hms_1.1.2                 modelr_0.1.9             
+[141] rhdf5_2.40.0              colorspace_2.0-3         
+[143] DropletUtils_1.16.0       base64enc_0.1-3          
+[145] ggbeeswarm_0.6.0          shape_1.4.6              
+[147] nnet_7.3-17               sass_0.4.2               
+[149] Rcpp_1.0.9                RANN_2.6.1               
+[151] mvtnorm_1.1-3             circlize_0.4.15          
+[153] FlowSOM_2.4.0             RProtoBufLib_2.8.0       
+[155] fansi_1.0.3               tzdb_0.3.0               
+[157] parallelly_1.32.1         ModelMetrics_1.2.2.2     
+[159] R6_2.5.1                  grid_4.2.1               
+[161] lifecycle_1.0.1           curl_4.3.2               
+[163] ggsignif_0.6.3            googlesheets4_1.0.1      
+[165] jquerylib_0.1.4           TH.data_1.1-1            
+[167] RColorBrewer_1.1-3        iterators_1.0.14         
+[169] gower_1.0.0               svgPanZoom_0.3.4         
+[171] htmlwidgets_1.5.4         beachmat_2.12.0          
+[173] polyclip_1.10-0           terra_1.5-34             
+[175] rvest_1.0.3               ComplexHeatmap_2.12.1    
+[177] globals_0.16.0            codetools_0.2-18         
+[179] lubridate_1.8.0           randomForest_4.7-1.1     
+[181] metapod_1.4.0             gtools_3.9.3             
+[183] getPass_0.2-2             dbplyr_2.2.1             
+[185] R.methodsS3_1.8.2         gtable_0.3.0             
+[187] DBI_1.1.3                 git2r_0.30.1             
+[189] httr_1.4.4                highr_0.9                
+[191] stringi_1.7.8             reshape2_1.4.4           
+[193] farver_2.1.1              hexbin_1.28.2            
+[195] Rgraphviz_2.40.0          magick_2.7.3             
+[197] timeDate_4021.104         xml2_1.3.3               
+[199] colorRamps_2.3.1          ggcyto_1.24.1            
+[201] BiocNeighbors_1.14.0      interp_1.1-3             
+[203] scattermore_0.8           jpeg_0.1-9               
+[205] pkgconfig_2.0.3           gargle_1.2.0             
+[207] rstatix_0.7.0             knitr_1.39               </code></pre>
 </div>
 </div>
 </div>

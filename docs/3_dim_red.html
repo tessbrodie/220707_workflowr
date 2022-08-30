@@ -36,6 +36,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -365,7 +367,13 @@ div.tocify {
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/tessbrodie/220707_workflowr">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -411,9 +419,9 @@ aria-hidden="true"></span> </a>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 2
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>220707_workflowr/</code> <span
@@ -507,90 +515,16 @@ versions is critical for reproducibility.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongdetected">
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> <strong>Cache:</strong> detected </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
 </p>
 </div>
-<div id="strongCachestrongdetected" class="panel-collapse collapse">
+<div id="strongCachestrongnone" class="panel-collapse collapse">
 <div class="panel-body">
-The following chunks had caches available:
-<ul>
-<li>
-approach comparison cell integration
-</li>
-<li>
-approach comparison
-</li>
-<li>
-bluster clustering
-</li>
-<li>
-bluster corrected
-</li>
-<li>
-CATALYST phenograph
-</li>
-<li>
-create heatmap with integrated phenoannoy
-</li>
-<li>
-create heatmap with phenoannoy data
-</li>
-<li>
-cytomapperShiny
-</li>
-<li>
-heatmap bluster corrected
-</li>
-<li>
-heatmap louvain integrated
-</li>
-<li>
-heatmap louvain
-</li>
-<li>
-heatmap metaclusters
-</li>
-<li>
-integrated cell phenoannoy
-</li>
-<li>
-load-libs
-</li>
-<li>
-load data
-</li>
-<li>
-louvain integrated phenograph
-</li>
-<li>
-louvain phenograph
-</li>
-<li>
-metaclustering
-</li>
-<li>
-Rphenoannoy
-</li>
-<li>
-save spe3
-</li>
-<li>
-session-info-chunk-inserted-by-workflowr
-</li>
-<li>
-shared nearest neigbhours graph
-</li>
-<li>
-unnamed-chunk-1
-</li>
-</ul>
-<p>To ensure reproducibility of the results, delete the cache directory
-<code>3_dim_red_cache</code> and re-run the analysis. To have workflowr
-automatically delete the cache directory prior to building the file, set
-<code>delete_cache = TRUE</code> when running <code>wflow_build()</code>
-or <code>wflow_publish()</code>.</p>
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
 </div>
 </div>
 </div>
@@ -639,13 +573,15 @@ laptop/Users2/Tess/SteinbockCellSegmentation/220707/220707_workflowr
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongdb869f5">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtessbrodie220707workflowrtreec445d7e066101dc1943e41240e4369e6ec7f1bb5targetblankc445d7ea">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> db869f5
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/tessbrodie/220707_workflowr/tree/c445d7e066101dc1943e41240e4369e6ec7f1bb5" target="_blank">c445d7e</a>
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongdb869f5"
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomtessbrodie220707workflowrtreec445d7e066101dc1943e41240e4369e6ec7f1bb5targetblankc445d7ea"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -654,7 +590,8 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version db869f5.
+The results in this page were generated with repository version
+<a href="https://github.com/tessbrodie/220707_workflowr/tree/c445d7e066101dc1943e41240e4369e6ec7f1bb5" target="_blank">c445d7e</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -675,7 +612,6 @@ Ignored files:
     Ignored:    analysis/0_prep_data_cache/
     Ignored:    analysis/1_QC_mask_cache/
     Ignored:    analysis/2_batch_effect_correction_cache/
-    Ignored:    analysis/3_dim_red_cache/
     Ignored:    analysis/4_cell_annotation_cache/
     Ignored:    analysis/5_sc_vis_cache/
     Ignored:    analysis/6_img_vis_cache/
@@ -716,7 +652,6 @@ Untracked files:
     Untracked:  output/spe4.rds
 
 Unstaged changes:
-    Modified:   analysis/_site.yml
     Deleted:    analysis/about.Rmd
     Deleted:    analysis/license.Rmd
 
@@ -766,10 +701,27 @@ Message
 <tbody>
 <tr>
 <td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/tessbrodie/220707_workflowr/41ee8fb368b033aa1135014fe5caf3b1579f3537/docs/3_dim_red.html" target="_blank">41ee8fb</a>
+</td>
+<td>
+tessbrodie
+</td>
+<td>
+2022-08-30
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
 Rmd
 </td>
 <td>
-db869f5
+<a href="https://github.com/tessbrodie/220707_workflowr/blob/db869f5c0a659c2858b5d9be7c6532f1530185af/analysis/3_dim_red.Rmd" target="_blank">db869f5</a>
 </td>
 <td>
 tessbrodie
@@ -836,15 +788,15 @@ out &lt;- Rphenoannoy(mat, k = 10)</code></pre>
 <pre><code>Run Rphenograph starts:
   -Input data of 15521 rows and 23 columns
   -k is set to 10</code></pre>
-<pre><code>  Finding nearest neighbors...DONE ~ 2.78 s
+<pre><code>  Finding nearest neighbors...DONE ~ 3.15 s
   Compute jaccard coefficient between nearest-neighbor sets...</code></pre>
 <pre><code>Presorting knn...</code></pre>
-<pre><code>presorting DONE ~ 0.58 s
+<pre><code>presorting DONE ~ 0.64 s
   Start jaccard
-DONE ~ 0.01 s
-  Build undirected graph from the weighted links...DONE ~ 0.06 s
-  Run louvain clustering on the graph ...DONE ~ 0.23 s</code></pre>
-<pre><code>Run Rphenograph DONE, totally takes 3.08s.</code></pre>
+DONE ~ 0.02 s
+  Build undirected graph from the weighted links...DONE ~ 0.07 s
+  Run louvain clustering on the graph ...DONE ~ 0.25 s</code></pre>
+<pre><code>Run Rphenograph DONE, totally takes 3.49s.</code></pre>
 <pre><code>  Return a community class
   -Modularity value: 0.874768 
   -Number of clusters: 33</code></pre>
@@ -868,7 +820,7 @@ dittoDimPlot(spe, var = &quot;pg_clusters&quot;,
              annot.by = c(&quot;pg_clusters&quot;, &quot;patient_id&quot;),
              annot.colors = c(dittoColors(1)[1:length(unique(spe$pg_clusters))],
                               metadata(spe)$color_vectors$patient_id))</code></pre>
-<p><img src="figure/3_dim_red.Rmd/create heatmap with phenoannoy data-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/create%20heatmap%20with%20phenoannoy%20data-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div id="create-a-phenoannoy-with-fastmnn-cell-integration-data"
 class="section level3">
 <h3>Create a phenoannoy with FastMNN cell integration data</h3>
@@ -880,15 +832,15 @@ out &lt;- Rphenoannoy(mat, k = 10)</code></pre>
 <pre><code>Run Rphenograph starts:
   -Input data of 15521 rows and 22 columns
   -k is set to 10</code></pre>
-<pre><code>  Finding nearest neighbors...DONE ~ 2.79 s
+<pre><code>  Finding nearest neighbors...DONE ~ 3.23 s
   Compute jaccard coefficient between nearest-neighbor sets...</code></pre>
 <pre><code>Presorting knn...</code></pre>
-<pre><code>presorting DONE ~ 0.58 s
+<pre><code>presorting DONE ~ 0.65 s
   Start jaccard
 DONE ~ 0 s
-  Build undirected graph from the weighted links...DONE ~ 0.05 s
-  Run louvain clustering on the graph ...DONE ~ 0.19 s</code></pre>
-<pre><code>Run Rphenograph DONE, totally takes 3.03s.</code></pre>
+  Build undirected graph from the weighted links...DONE ~ 0.06 s
+  Run louvain clustering on the graph ...DONE ~ 0.18 s</code></pre>
+<pre><code>Run Rphenograph DONE, totally takes 3.47s.</code></pre>
 <pre><code>  Return a community class
   -Modularity value: 0.8722263 
   -Number of clusters: 34</code></pre>
@@ -900,7 +852,7 @@ dittoDimPlot(spe, var = &quot;pg_clusters_corrected&quot;,
              reduction.use = &quot;UMAP_mnnCorrected&quot;, size = 0.2,
              do.label = TRUE) +
     ggtitle(&quot;Phenoannoy clusters expression on UMAP, integrated cells&quot;)</code></pre>
-<p><img src="figure/3_dim_red.Rmd/integrated cell phenoannoy-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/integrated%20cell%20phenoannoy-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="heatmap-with-fastmnn-cell-integrated-phenoannoy"
 class="section level3">
@@ -912,7 +864,7 @@ class="section level3">
              annot.by = c(&quot;pg_clusters_corrected&quot;, &quot;patient_id&quot;),
              annot.colors = c(dittoColors(1)[1:length(unique(spe$pg_clusters_corrected))],
                               metadata(spe)$color_vectors$patient_id))</code></pre>
-<p><img src="figure/3_dim_red.Rmd/create heatmap with integrated phenoannoy-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/create%20heatmap%20with%20integrated%20phenoannoy-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="shared-nearest-neighbour-graph-this-takes-a-while-to-run"
 class="section level3">
@@ -942,7 +894,7 @@ dittoDimPlot(spe, var = &quot;nn_clusters&quot;,
              reduction.use = &quot;UMAP&quot;, size = 0.2,
              do.label = TRUE) +
     ggtitle(&quot;SNN clusters expression on UMAP&quot;)</code></pre>
-<p><img src="figure/3_dim_red.Rmd/louvain phenograph-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/louvain%20phenograph-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="heatmap-louvain---rank---k20" class="section level3">
 <h3>Heatmap louvain - rank - k=20</h3>
@@ -953,7 +905,7 @@ dittoDimPlot(spe, var = &quot;nn_clusters&quot;,
              annot.by = c(&quot;nn_clusters&quot;, &quot;patient_id&quot;),
              annot.colors = c(dittoColors(1)[1:length(unique(spe$nn_clusters))],
                               metadata(spe)$color_vectors$patient_id))</code></pre>
-<p><img src="figure/3_dim_red.Rmd/heatmap louvain-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/heatmap%20louvain-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="phenograph-louvain-with-integrated-cells"
 class="section level3">
@@ -971,7 +923,7 @@ dittoDimPlot(spe, var = &quot;nn_clusters_corrected&quot;,
              reduction.use = &quot;UMAP_mnnCorrected&quot;, size = 0.2,
              do.label = TRUE) +
     ggtitle(&quot;SNN clusters expression on UMAP, integrated cells&quot;)</code></pre>
-<p><img src="figure/3_dim_red.Rmd/louvain integrated phenograph-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/louvain%20integrated%20phenograph-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="heatmap-louvain-integrated-phenograph" class="section level3">
 <h3>Heatmap louvain integrated phenograph</h3>
@@ -982,7 +934,7 @@ dittoDimPlot(spe, var = &quot;nn_clusters_corrected&quot;,
              annot.by = c(&quot;nn_clusters_corrected&quot;, &quot;patient_id&quot;),
              annot.colors = c(dittoColors(1)[1:length(unique(spe$nn_clusters_corrected))],
                               metadata(spe)$color_vectors$patient_id))</code></pre>
-<p><img src="figure/3_dim_red.Rmd/heatmap louvain integrated-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/heatmap%20louvain%20integrated-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="flowsomcatalyst-phenographs" class="section level3">
 <h3>flowSOM/Catalyst phenographs</h3>
@@ -994,7 +946,7 @@ spe &lt;- CATALYST::cluster(spe,
 <pre><code>o running ConsensusClusterPlus metaclustering...</code></pre>
 <pre class="r"><code># Assess cluster stability
 delta_area(spe)</code></pre>
-<p><img src="figure/3_dim_red.Rmd/CATALYST phenograph-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/CATALYST%20phenograph-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="cell-clusters-with-meta12" class="section level3">
 <h3>Cell clusters with meta12</h3>
@@ -1015,7 +967,7 @@ dittoDimPlot(spe, var = &quot;som_clusters&quot;,
              annot.by = c(&quot;som_clusters&quot;, &quot;patient_id&quot;),
              annot.colors = c(dittoColors(1)[1:length(unique(spe$som_clusters))],
                               metadata(spe)$color_vectors$patient_id))</code></pre>
-<p><img src="figure/3_dim_red.Rmd/heatmap metaclusters-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/heatmap%20metaclusters-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="clustering-with-bluster-package" class="section level3">
 <h3>Clustering with bluster package</h3>
@@ -1034,65 +986,65 @@ ccp &lt;- ConsensusClusterPlus(t(som.out$objects$som$codes[[1]]),
                             plot = NULL)</code></pre>
 <pre><code>end fraction</code></pre>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-2.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-3.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-4.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-5.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-5.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-6.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-6.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-7.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-7.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-8.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-8.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-9.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-9.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-10.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-10.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-11.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-11.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-12.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-12.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-13.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-13.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-14.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-14.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-15.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-15.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-16.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-16.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-17.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-17.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-18.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-18.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-19.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-19.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-20.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-20.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-21.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-21.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-22.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-22.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-23.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-23.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-24.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-24.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-25.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-25.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-26.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-26.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-27.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-27.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-28.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-28.png" width="672" style="display: block; margin: auto;" /></p>
 <pre><code>clustered</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-29.png" width="672" style="display: block; margin: auto;" /><img src="figure/3_dim_red.Rmd/bluster clustering-30.png" width="672" style="display: block; margin: auto;" /><img src="figure/3_dim_red.Rmd/bluster clustering-31.png" width="672" style="display: block; margin: auto;" /><img src="figure/3_dim_red.Rmd/bluster clustering-32.png" width="672" style="display: block; margin: auto;" /><img src="figure/3_dim_red.Rmd/bluster clustering-33.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-29.png" width="672" style="display: block; margin: auto;" /><img src="figure/3_dim_red.Rmd/bluster%20clustering-30.png" width="672" style="display: block; margin: auto;" /><img src="figure/3_dim_red.Rmd/bluster%20clustering-31.png" width="672" style="display: block; margin: auto;" /><img src="figure/3_dim_red.Rmd/bluster%20clustering-32.png" width="672" style="display: block; margin: auto;" /><img src="figure/3_dim_red.Rmd/bluster%20clustering-33.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>CATALYST:::.plot_delta_area(ccp)</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster clustering-34.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20clustering-34.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div
 id="link-consensusclusterplus-clusters-with-som-codes-and-save-in-object"
@@ -1106,7 +1058,7 @@ dittoDimPlot(spe, var = &quot;som_clusters_corrected&quot;,
              reduction.use = &quot;UMAP_mnnCorrected&quot;, size = 0.2,
              do.label = TRUE) +
     ggtitle(&quot;Phenograph clusters expression on UMAP, integrated cells&quot;)</code></pre>
-<p><img src="figure/3_dim_red.Rmd/bluster corrected-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/bluster%20corrected-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="heatmap-with-som" class="section level3">
 <h3>Heatmap with SOM</h3>
@@ -1117,7 +1069,7 @@ dittoDimPlot(spe, var = &quot;som_clusters_corrected&quot;,
              annot.by = c(&quot;som_clusters_corrected&quot;, &quot;patient_id&quot;),
              annot.colors = c(dittoColors(1)[1:length(unique(spe$som_clusters_corrected))],
                               metadata(spe)$color_vectors$patient_id))</code></pre>
-<p><img src="figure/3_dim_red.Rmd/heatmap bluster corrected-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/heatmap%20bluster%20corrected-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="comparison-between-clustering-approaches"
 class="section level3">
@@ -1130,13 +1082,13 @@ tab3 &lt;- table(paste(&quot;SNN&quot;, spe$nn_clusters),
               paste(&quot;SOM&quot;, spe$som_clusters))
 
 ph1 &lt;- pheatmap(log10(tab1 + 10), color = viridis(100))[[4]]</code></pre>
-<p><img src="figure/3_dim_red.Rmd/approach comparison-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/approach%20comparison-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ph2 &lt;- pheatmap(log10(tab2 + 10), color = viridis(100))[[4]]</code></pre>
-<p><img src="figure/3_dim_red.Rmd/approach comparison-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/approach%20comparison-2.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ph3 &lt;- pheatmap(log10(tab3 + 10), color = viridis(100))[[4]]</code></pre>
-<p><img src="figure/3_dim_red.Rmd/approach comparison-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/approach%20comparison-3.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>grid.arrange(ph1, ph2, ph3, nrow = 1, ncol = 3)</code></pre>
-<p><img src="figure/3_dim_red.Rmd/approach comparison-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/approach%20comparison-4.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="comparison-between-clustering-approaches-integrated-cells"
 class="section level3">
@@ -1149,13 +1101,13 @@ tab3 &lt;- table(paste(&quot;SNN&quot;, spe$nn_clusters_corrected),
               paste(&quot;SOM&quot;, spe$som_clusters_corrected))
 
 ph1 &lt;- pheatmap(log10(tab1 + 10), color = viridis(100))[[4]]</code></pre>
-<p><img src="figure/3_dim_red.Rmd/approach comparison cell integration-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/approach%20comparison%20cell%20integration-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ph2 &lt;- pheatmap(log10(tab2 + 10), color = viridis(100))[[4]]</code></pre>
-<p><img src="figure/3_dim_red.Rmd/approach comparison cell integration-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/approach%20comparison%20cell%20integration-2.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ph3 &lt;- pheatmap(log10(tab3 + 10), color = viridis(100))[[4]]</code></pre>
-<p><img src="figure/3_dim_red.Rmd/approach comparison cell integration-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/approach%20comparison%20cell%20integration-3.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>grid.arrange(ph1, ph2, ph3, nrow = 1, ncol = 3)</code></pre>
-<p><img src="figure/3_dim_red.Rmd/approach comparison cell integration-4.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/3_dim_red.Rmd/approach%20comparison%20cell%20integration-4.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="save-data" class="section level3">
 <h3>Save data</h3>
@@ -1185,11 +1137,11 @@ attached base packages:
 [8] base     
 
 other attached packages:
- [1] ggridges_0.5.3              caret_6.0-92               
+ [1] ggridges_0.5.3              caret_6.0-93               
  [3] lattice_0.20-45             Rphenoannoy_0.1.0          
  [5] Matrix_1.4-1                cytomapper_1.8.0           
  [7] EBImage_4.38.0              gridExtra_2.3              
- [9] pheatmap_1.0.12             patchwork_1.1.1            
+ [9] pheatmap_1.0.12             patchwork_1.1.2            
 [11] ConsensusClusterPlus_1.60.0 kohonen_3.0.11             
 [13] CATALYST_1.20.1             scran_1.24.0               
 [15] scuttle_1.6.2               BiocParallel_1.30.3        
@@ -1208,102 +1160,103 @@ loaded via a namespace (and not attached):
   [1] scattermore_0.8           flowWorkspace_4.8.0      
   [3] ModelMetrics_1.2.2.2      R.methodsS3_1.8.2        
   [5] tidyr_1.2.0               knitr_1.39               
-  [7] irlba_2.3.5               multcomp_1.4-19          
+  [7] irlba_2.3.5               multcomp_1.4-20          
   [9] DelayedArray_0.22.0       R.utils_2.12.0           
  [11] rpart_4.1.16              data.table_1.14.2        
  [13] hardhat_1.2.0             RCurl_1.98-1.7           
  [15] doParallel_1.0.17         generics_0.1.3           
- [17] flowCore_2.8.0            ScaledMatrix_1.4.0       
- [19] terra_1.5-34              callr_3.7.1              
- [21] cowplot_1.1.1             TH.data_1.1-1            
- [23] RANN_2.6.1                future_1.26.1            
- [25] ggpointdensity_0.1.0      lubridate_1.8.0          
- [27] xml2_1.3.3                httpuv_1.6.5             
- [29] assertthat_0.2.1          gower_1.0.0              
- [31] xfun_0.31                 jquerylib_0.1.4          
- [33] evaluate_0.15             promises_1.2.0.1         
- [35] fansi_1.0.3               htmlwidgets_1.5.4        
- [37] Rgraphviz_2.40.0          DBI_1.1.3                
- [39] purrr_0.3.4               ellipsis_0.3.2           
- [41] dplyr_1.0.9               ggcyto_1.24.1            
- [43] ggnewscale_0.4.7          ggpubr_0.4.0             
- [45] backports_1.4.1           cytolib_2.8.0            
- [47] svgPanZoom_0.3.4          RcppParallel_5.1.5       
- [49] deldir_1.0-6              sparseMatrixStats_1.8.0  
- [51] vctrs_0.4.1               abind_1.4-5              
- [53] cachem_1.0.6              withr_2.5.0              
- [55] ggforce_0.3.3             aws.signature_0.6.0      
- [57] svglite_2.1.0             cluster_2.1.3            
- [59] crayon_1.5.1              drc_3.0-1                
- [61] recipes_1.0.1             edgeR_3.38.1             
- [63] pkgconfig_2.0.3           tweenr_1.0.2             
- [65] nlme_3.1-158              vipor_0.4.5              
- [67] nnet_7.3-17               globals_0.15.1           
- [69] rlang_1.0.4               lifecycle_1.0.1          
- [71] sandwich_3.0-2            rsvd_1.0.5               
- [73] rprojroot_2.0.3           polyclip_1.10-0          
- [75] tiff_0.1-11               graph_1.74.0             
- [77] raster_3.5-21             carData_3.0-5            
- [79] Rhdf5lib_1.18.2           zoo_1.8-10               
- [81] base64enc_0.1-3           beeswarm_0.4.0           
- [83] whisker_0.4               GlobalOptions_0.1.2      
- [85] processx_3.7.0            png_0.1-7                
- [87] rjson_0.2.21              shinydashboard_0.7.2     
- [89] bitops_1.0-7              getPass_0.2-2            
- [91] R.oo_1.25.0               pROC_1.18.0              
- [93] rhdf5filters_1.8.0        DelayedMatrixStats_1.18.0
- [95] shape_1.4.6               stringr_1.4.0            
- [97] parallelly_1.32.0         jpeg_0.1-9               
- [99] rstatix_0.7.0             ggsignif_0.6.3           
-[101] aws.s3_0.3.21             beachmat_2.12.0          
-[103] scales_1.2.0              magrittr_2.0.3           
-[105] plyr_1.8.7                hexbin_1.28.2            
-[107] zlibbioc_1.42.0           compiler_4.2.1           
-[109] dqrng_0.3.0               RColorBrewer_1.1-3       
-[111] plotrix_3.8-2             clue_0.3-61              
-[113] cli_3.3.0                 XVector_0.36.0           
-[115] listenv_0.8.0             ncdfFlow_2.42.1          
-[117] ps_1.7.1                  FlowSOM_2.4.0            
-[119] MASS_7.3-58               tidyselect_1.1.2         
-[121] stringi_1.7.8             RProtoBufLib_2.8.0       
-[123] highr_0.9                 yaml_2.3.5               
-[125] BiocSingular_1.12.0       locfit_1.5-9.6           
-[127] latticeExtra_0.6-30       ggrepel_0.9.1            
-[129] grid_4.2.1                sass_0.4.2               
-[131] tools_4.2.1               future.apply_1.9.0       
-[133] parallel_4.2.1            CytoML_2.8.0             
-[135] circlize_0.4.15           rstudioapi_0.13          
-[137] foreach_1.5.2             git2r_0.30.1             
-[139] metapod_1.4.0             prodlim_2019.11.13       
-[141] farver_2.1.1              Rtsne_0.16               
-[143] DropletUtils_1.16.0       digest_0.6.29            
-[145] lava_1.6.10               shiny_1.7.2              
-[147] Rcpp_1.0.9                car_3.1-0                
-[149] broom_1.0.0               later_1.3.0              
-[151] httr_1.4.3                ComplexHeatmap_2.12.0    
-[153] colorspace_2.0-3          XML_3.99-0.10            
-[155] fs_1.5.2                  splines_4.2.1            
-[157] statmod_1.4.36            RBGL_1.72.0              
-[159] scater_1.24.0             sp_1.5-0                 
-[161] systemfonts_1.0.4         xtable_1.8-4             
-[163] jsonlite_1.8.0            timeDate_4021.104        
-[165] ipred_0.9-13              R6_2.5.1                 
-[167] mime_0.12                 pillar_1.8.0             
-[169] htmltools_0.5.3           nnls_1.4                 
-[171] glue_1.6.2                fastmap_1.1.0            
-[173] fftwtools_0.9-11          BiocNeighbors_1.14.0     
-[175] class_7.3-20              codetools_0.2-18         
-[177] mvtnorm_1.1-3             utf8_1.2.2               
-[179] bslib_0.4.0               tibble_3.1.7             
-[181] curl_4.3.2                ggbeeswarm_0.6.0         
-[183] colorRamps_2.3.1          gtools_3.9.3             
-[185] magick_2.7.3              interp_1.1-3             
-[187] survival_3.3-1            limma_3.52.2             
-[189] rmarkdown_2.14            munsell_0.5.0            
-[191] GetoptLong_1.0.5          rhdf5_2.40.0             
-[193] GenomeInfoDbData_1.2.8    iterators_1.0.14         
-[195] HDF5Array_1.24.1          reshape2_1.4.4           
-[197] gtable_0.3.0             </code></pre>
+ [17] flowCore_2.8.0            snow_0.4-4               
+ [19] ScaledMatrix_1.4.0        terra_1.5-34             
+ [21] callr_3.7.2               cowplot_1.1.1            
+ [23] TH.data_1.1-1             RANN_2.6.1               
+ [25] future_1.27.0             ggpointdensity_0.1.0     
+ [27] lubridate_1.8.0           xml2_1.3.3               
+ [29] httpuv_1.6.5              assertthat_0.2.1         
+ [31] gower_1.0.0               xfun_0.31                
+ [33] jquerylib_0.1.4           evaluate_0.16            
+ [35] promises_1.2.0.1          fansi_1.0.3              
+ [37] htmlwidgets_1.5.4         Rgraphviz_2.40.0         
+ [39] DBI_1.1.3                 purrr_0.3.4              
+ [41] ellipsis_0.3.2            dplyr_1.0.9              
+ [43] ggcyto_1.24.1             ggnewscale_0.4.7         
+ [45] ggpubr_0.4.0              backports_1.4.1          
+ [47] cytolib_2.8.0             svgPanZoom_0.3.4         
+ [49] RcppParallel_5.1.5        deldir_1.0-6             
+ [51] sparseMatrixStats_1.8.0   vctrs_0.4.1              
+ [53] abind_1.4-5               cachem_1.0.6             
+ [55] withr_2.5.0               ggforce_0.3.3            
+ [57] aws.signature_0.6.0       svglite_2.1.0            
+ [59] cluster_2.1.3             crayon_1.5.1             
+ [61] drc_3.0-1                 labeling_0.4.2           
+ [63] recipes_1.0.1             edgeR_3.38.1             
+ [65] pkgconfig_2.0.3           tweenr_1.0.2             
+ [67] nlme_3.1-158              vipor_0.4.5              
+ [69] nnet_7.3-17               globals_0.16.0           
+ [71] rlang_1.0.4               lifecycle_1.0.1          
+ [73] sandwich_3.0-2            rsvd_1.0.5               
+ [75] rprojroot_2.0.3           polyclip_1.10-0          
+ [77] tiff_0.1-11               graph_1.74.0             
+ [79] raster_3.5-21             carData_3.0-5            
+ [81] Rhdf5lib_1.18.2           zoo_1.8-10               
+ [83] beeswarm_0.4.0            base64enc_0.1-3          
+ [85] whisker_0.4               GlobalOptions_0.1.2      
+ [87] processx_3.7.0            png_0.1-7                
+ [89] rjson_0.2.21              shinydashboard_0.7.2     
+ [91] bitops_1.0-7              getPass_0.2-2            
+ [93] R.oo_1.25.0               pROC_1.18.0              
+ [95] rhdf5filters_1.8.0        DelayedMatrixStats_1.18.0
+ [97] shape_1.4.6               stringr_1.4.0            
+ [99] parallelly_1.32.1         jpeg_0.1-9               
+[101] rstatix_0.7.0             ggsignif_0.6.3           
+[103] aws.s3_0.3.21             beachmat_2.12.0          
+[105] scales_1.2.1              magrittr_2.0.3           
+[107] plyr_1.8.7                hexbin_1.28.2            
+[109] zlibbioc_1.42.0           compiler_4.2.1           
+[111] dqrng_0.3.0               RColorBrewer_1.1-3       
+[113] plotrix_3.8-2             clue_0.3-61              
+[115] cli_3.3.0                 XVector_0.36.0           
+[117] listenv_0.8.0             ncdfFlow_2.42.1          
+[119] ps_1.7.1                  FlowSOM_2.4.0            
+[121] MASS_7.3-58               tidyselect_1.1.2         
+[123] stringi_1.7.8             RProtoBufLib_2.8.0       
+[125] highr_0.9                 yaml_2.3.5               
+[127] BiocSingular_1.12.0       locfit_1.5-9.6           
+[129] latticeExtra_0.6-30       ggrepel_0.9.1            
+[131] grid_4.2.1                sass_0.4.2               
+[133] tools_4.2.1               future.apply_1.9.0       
+[135] parallel_4.2.1            CytoML_2.8.0             
+[137] circlize_0.4.15           rstudioapi_0.14          
+[139] foreach_1.5.2             git2r_0.30.1             
+[141] metapod_1.4.0             prodlim_2019.11.13       
+[143] farver_2.1.1              Rtsne_0.16               
+[145] DropletUtils_1.16.0       digest_0.6.29            
+[147] lava_1.6.10               shiny_1.7.2              
+[149] Rcpp_1.0.9                car_3.1-0                
+[151] broom_1.0.0               later_1.3.0              
+[153] httr_1.4.4                ComplexHeatmap_2.12.1    
+[155] colorspace_2.0-3          XML_3.99-0.10            
+[157] fs_1.5.2                  splines_4.2.1            
+[159] RBGL_1.72.0               statmod_1.4.37           
+[161] scater_1.24.0             sp_1.5-0                 
+[163] systemfonts_1.0.4         xtable_1.8-4             
+[165] jsonlite_1.8.0            timeDate_4021.104        
+[167] ipred_0.9-13              R6_2.5.1                 
+[169] mime_0.12                 pillar_1.8.1             
+[171] htmltools_0.5.3           nnls_1.4                 
+[173] glue_1.6.2                fastmap_1.1.0            
+[175] fftwtools_0.9-11          BiocNeighbors_1.14.0     
+[177] class_7.3-20              codetools_0.2-18         
+[179] mvtnorm_1.1-3             utf8_1.2.2               
+[181] bslib_0.4.0               tibble_3.1.7             
+[183] curl_4.3.2                ggbeeswarm_0.6.0         
+[185] colorRamps_2.3.1          gtools_3.9.3             
+[187] magick_2.7.3              interp_1.1-3             
+[189] survival_3.3-1            limma_3.52.2             
+[191] rmarkdown_2.15            munsell_0.5.0            
+[193] GetoptLong_1.0.5          rhdf5_2.40.0             
+[195] GenomeInfoDbData_1.2.8    iterators_1.0.14         
+[197] HDF5Array_1.24.1          reshape2_1.4.4           
+[199] gtable_0.3.0             </code></pre>
 </div>
 </div>
 </div>

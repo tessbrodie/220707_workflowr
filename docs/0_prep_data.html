@@ -36,6 +36,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -365,7 +367,13 @@ div.tocify {
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/tessbrodie/220707_workflowr">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -411,9 +419,9 @@ aria-hidden="true"></span> </a>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 2
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>220707_workflowr/</code> <span
@@ -507,60 +515,16 @@ versions is critical for reproducibility.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongdetected">
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> <strong>Cache:</strong> detected </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
 </p>
 </div>
-<div id="strongCachestrongdetected" class="panel-collapse collapse">
+<div id="strongCachestrongnone" class="panel-collapse collapse">
 <div class="panel-body">
-The following chunks had caches available:
-<ul>
-<li>
-after_arcsinh
-</li>
-<li>
-before_arcsinh
-</li>
-<li>
-checkmetadata
-</li>
-<li>
-filterdata
-</li>
-<li>
-load-data
-</li>
-<li>
-load-libs
-</li>
-<li>
-metadata
-</li>
-<li>
-savedata spe0
-</li>
-<li>
-session-info-chunk-inserted-by-workflowr
-</li>
-<li>
-set colors
-</li>
-<li>
-unnamed-chunk-1
-</li>
-<li>
-unnamed-chunk-2
-</li>
-<li>
-unnamed-chunk-3
-</li>
-</ul>
-<p>To ensure reproducibility of the results, delete the cache directory
-<code>0_prep_data_cache</code> and re-run the analysis. To have
-workflowr automatically delete the cache directory prior to building the
-file, set <code>delete_cache = TRUE</code> when running
-<code>wflow_build()</code> or <code>wflow_publish()</code>.</p>
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
 </div>
 </div>
 </div>
@@ -609,13 +573,15 @@ laptop/Users2/Tess/SteinbockCellSegmentation/220707/220707_workflowr
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongdb869f5">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtessbrodie220707workflowrtreec445d7e066101dc1943e41240e4369e6ec7f1bb5targetblankc445d7ea">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> db869f5
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/tessbrodie/220707_workflowr/tree/c445d7e066101dc1943e41240e4369e6ec7f1bb5" target="_blank">c445d7e</a>
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongdb869f5"
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomtessbrodie220707workflowrtreec445d7e066101dc1943e41240e4369e6ec7f1bb5targetblankc445d7ea"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -624,7 +590,8 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version db869f5.
+The results in this page were generated with repository version
+<a href="https://github.com/tessbrodie/220707_workflowr/tree/c445d7e066101dc1943e41240e4369e6ec7f1bb5" target="_blank">c445d7e</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -642,7 +609,6 @@ Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
     Ignored:    analysis/.Rhistory
-    Ignored:    analysis/0_prep_data_cache/
     Ignored:    analysis/1_QC_mask_cache/
     Ignored:    analysis/2_batch_effect_correction_cache/
     Ignored:    analysis/3_dim_red_cache/
@@ -686,7 +652,6 @@ Untracked files:
     Untracked:  output/spe4.rds
 
 Unstaged changes:
-    Modified:   analysis/_site.yml
     Deleted:    analysis/about.Rmd
     Deleted:    analysis/license.Rmd
 
@@ -736,10 +701,27 @@ Message
 <tbody>
 <tr>
 <td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/tessbrodie/220707_workflowr/41ee8fb368b033aa1135014fe5caf3b1579f3537/docs/0_prep_data.html" target="_blank">41ee8fb</a>
+</td>
+<td>
+tessbrodie
+</td>
+<td>
+2022-08-30
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
 Rmd
 </td>
 <td>
-db869f5
+<a href="https://github.com/tessbrodie/220707_workflowr/blob/db869f5c0a659c2858b5d9be7c6532f1530185af/analysis/0_prep_data.Rmd" target="_blank">db869f5</a>
 </td>
 <td>
 tessbrodie
@@ -1011,7 +993,7 @@ other attached packages:
  [1] RColorBrewer_1.1-3          dittoSeq_1.8.1             
  [3] ggplot2_3.3.6               stringr_1.4.0              
  [5] openxlsx_4.2.5              cytomapper_1.8.0           
- [7] EBImage_4.38.0              imcRtools_1.2.3            
+ [7] EBImage_4.38.0              imcRtools_1.3.7            
  [9] SpatialExperiment_1.6.0     SingleCellExperiment_1.18.0
 [11] SummarizedExperiment_1.26.1 Biobase_2.56.0             
 [13] GenomicRanges_1.48.0        GenomeInfoDb_1.32.2        
@@ -1033,21 +1015,21 @@ loaded via a namespace (and not attached):
  [21] svglite_2.1.0             jpeg_0.1-9               
  [23] colorspace_2.0-3          ggrepel_0.9.1            
  [25] xfun_0.31                 dplyr_1.0.9              
- [27] crayon_1.5.1              callr_3.7.1              
+ [27] crayon_1.5.1              callr_3.7.2              
  [29] RCurl_1.98-1.7            jsonlite_1.8.0           
  [31] glue_1.6.2                polyclip_1.10-0          
  [33] gtable_0.3.0              nnls_1.4                 
  [35] zlibbioc_1.42.0           XVector_0.36.0           
  [37] DelayedArray_0.22.0       DropletUtils_1.16.0      
  [39] Rhdf5lib_1.18.2           HDF5Array_1.24.1         
- [41] abind_1.4-5               scales_1.2.0             
+ [41] abind_1.4-5               scales_1.2.1             
  [43] pheatmap_1.0.12           DBI_1.1.3                
  [45] edgeR_3.38.1              Rcpp_1.0.9               
  [47] viridisLite_0.4.0         xtable_1.8-4             
  [49] units_0.8-0               dqrng_0.3.0              
  [51] bit_4.0.4                 proxy_0.4-27             
- [53] DT_0.23                   htmlwidgets_1.5.4        
- [55] httr_1.4.3                ellipsis_0.3.2           
+ [53] DT_0.24                   htmlwidgets_1.5.4        
+ [55] httr_1.4.4                ellipsis_0.3.2           
  [57] pkgconfig_2.0.3           R.methodsS3_1.8.2        
  [59] farver_2.1.1              scuttle_1.6.2            
  [61] sass_0.4.2                locfit_1.5-9.6           
@@ -1057,7 +1039,7 @@ loaded via a namespace (and not attached):
  [69] munsell_0.5.0             tools_4.2.1              
  [71] cachem_1.0.6              cli_3.3.0                
  [73] generics_0.1.3            ggridges_0.5.3           
- [75] evaluate_0.15             fastmap_1.1.0            
+ [75] evaluate_0.16             fastmap_1.1.0            
  [77] fftwtools_0.9-11          yaml_2.3.5               
  [79] bit64_4.0.5               processx_3.7.0           
  [81] knitr_1.39                fs_1.5.2                 
@@ -1066,14 +1048,14 @@ loaded via a namespace (and not attached):
  [87] sparseMatrixStats_1.8.0   whisker_0.4              
  [89] mime_0.12                 R.oo_1.25.0              
  [91] concaveman_1.1.0          compiler_4.2.1           
- [93] rstudioapi_0.13           beeswarm_0.4.0           
+ [93] rstudioapi_0.14           beeswarm_0.4.0           
  [95] png_0.1-7                 e1071_1.7-11             
  [97] tibble_3.1.7              tweenr_1.0.2             
  [99] bslib_0.4.0               stringi_1.7.8            
 [101] highr_0.9                 ps_1.7.1                 
 [103] lattice_0.20-45           Matrix_1.4-1             
 [105] classInt_0.4-7            vctrs_0.4.1              
-[107] pillar_1.8.0              lifecycle_1.0.1          
+[107] pillar_1.8.1              lifecycle_1.0.1          
 [109] rhdf5filters_1.8.0        jquerylib_0.1.4          
 [111] BiocNeighbors_1.14.0      cowplot_1.1.1            
 [113] data.table_1.14.2         bitops_1.0-7             
@@ -1084,14 +1066,15 @@ loaded via a namespace (and not attached):
 [123] MASS_7.3-58               assertthat_0.2.1         
 [125] rhdf5_2.40.0              rprojroot_2.0.3          
 [127] rjson_0.2.21              withr_2.5.0              
-[129] GenomeInfoDbData_1.2.8    hms_1.1.1                
+[129] GenomeInfoDbData_1.2.8    hms_1.1.2                
 [131] parallel_4.2.1            terra_1.5-34             
 [133] grid_4.2.1                beachmat_2.12.0          
 [135] class_7.3-20              tidyr_1.2.0              
-[137] rmarkdown_2.14            DelayedMatrixStats_1.18.0
-[139] git2r_0.30.1              sf_1.0-8                 
-[141] getPass_0.2-2             ggforce_0.3.3            
-[143] shiny_1.7.2               ggbeeswarm_0.6.0         </code></pre>
+[137] rmarkdown_2.15            DelayedMatrixStats_1.18.0
+[139] distances_0.1.8           git2r_0.30.1             
+[141] sf_1.0-8                  getPass_0.2-2            
+[143] ggforce_0.3.3             shiny_1.7.2              
+[145] ggbeeswarm_0.6.0         </code></pre>
 </div>
 </div>
 

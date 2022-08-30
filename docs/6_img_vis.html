@@ -36,6 +36,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -365,7 +367,13 @@ div.tocify {
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/tessbrodie/220707_workflowr">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -411,9 +419,9 @@ aria-hidden="true"></span> </a>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 2
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>220707_workflowr/</code> <span
@@ -507,90 +515,16 @@ versions is critical for reproducibility.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongdetected">
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> <strong>Cache:</strong> detected </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
 </p>
 </div>
-<div id="strongCachestrongdetected" class="panel-collapse collapse">
+<div id="strongCachestrongnone" class="panel-collapse collapse">
 <div class="panel-body">
-The following chunks had caches available:
-<ul>
-<li>
-adding condition
-</li>
-<li>
-area_overlay
-</li>
-<li>
-celloutline_overlay_all
-</li>
-<li>
-celloutline_overlay_onecelltype
-</li>
-<li>
-celltype_overlay
-</li>
-<li>
-celltype_overlay_choosecolors
-</li>
-<li>
-celltype_overlay_oneimage
-</li>
-<li>
-celltype_overlay_onetargetred
-</li>
-<li>
-load-libs
-</li>
-<li>
-load data
-</li>
-<li>
-meanpixel_overlay_multitarget
-</li>
-<li>
-meanpixel_overlay_multitarget_manualcolors
-</li>
-<li>
-meanpixel_overlay_onetarget
-</li>
-<li>
-session-info-chunk-inserted-by-workflowr
-</li>
-<li>
-target_overlay_annotated
-</li>
-<li>
-tissue_target
-</li>
-<li>
-tissue_targets
-</li>
-<li>
-tissue_targets_colorchoose
-</li>
-<li>
-tissue_targets_normed_acrossall
-</li>
-<li>
-tissue_targets_normed_manual
-</li>
-<li>
-tissue_targets_normed_perimage
-</li>
-<li>
-unnamed-chunk-1
-</li>
-<li>
-unnamed-chunk-2
-</li>
-</ul>
-<p>To ensure reproducibility of the results, delete the cache directory
-<code>6_img_vis_cache</code> and re-run the analysis. To have workflowr
-automatically delete the cache directory prior to building the file, set
-<code>delete_cache = TRUE</code> when running <code>wflow_build()</code>
-or <code>wflow_publish()</code>.</p>
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
 </div>
 </div>
 </div>
@@ -639,13 +573,15 @@ laptop/Users2/Tess/SteinbockCellSegmentation/220707/220707_workflowr
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongdb869f5">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtessbrodie220707workflowrtreec445d7e066101dc1943e41240e4369e6ec7f1bb5targetblankc445d7ea">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> db869f5
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/tessbrodie/220707_workflowr/tree/c445d7e066101dc1943e41240e4369e6ec7f1bb5" target="_blank">c445d7e</a>
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongdb869f5"
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomtessbrodie220707workflowrtreec445d7e066101dc1943e41240e4369e6ec7f1bb5targetblankc445d7ea"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -654,7 +590,8 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version db869f5.
+The results in this page were generated with repository version
+<a href="https://github.com/tessbrodie/220707_workflowr/tree/c445d7e066101dc1943e41240e4369e6ec7f1bb5" target="_blank">c445d7e</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -678,7 +615,6 @@ Ignored files:
     Ignored:    analysis/3_dim_red_cache/
     Ignored:    analysis/4_cell_annotation_cache/
     Ignored:    analysis/5_sc_vis_cache/
-    Ignored:    analysis/6_img_vis_cache/
     Ignored:    analysis/7_spatial_vis_cache/
 
 Untracked files:
@@ -716,7 +652,6 @@ Untracked files:
     Untracked:  output/spe4.rds
 
 Unstaged changes:
-    Modified:   analysis/_site.yml
     Deleted:    analysis/about.Rmd
     Deleted:    analysis/license.Rmd
 
@@ -766,10 +701,27 @@ Message
 <tbody>
 <tr>
 <td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/tessbrodie/220707_workflowr/41ee8fb368b033aa1135014fe5caf3b1579f3537/docs/6_img_vis.html" target="_blank">41ee8fb</a>
+</td>
+<td>
+tessbrodie
+</td>
+<td>
+2022-08-30
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
 Rmd
 </td>
 <td>
-db869f5
+<a href="https://github.com/tessbrodie/220707_workflowr/blob/db869f5c0a659c2858b5d9be7c6532f1530185af/analysis/6_img_vis.Rmd" target="_blank">db869f5</a>
 </td>
 <td>
 tessbrodie
