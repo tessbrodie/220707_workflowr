@@ -1,0 +1,338 @@
+---
+title: "IMC data analysis workflow"
+author: "Tess Brodie"
+date: "University of Bern, DBMR, Visceral and Transplantation Surgery lab"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+# Dimensionality reduction and cell classification
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#Important - this path is relative to your dataset, set working directory
+knitr::opts_knit$set(root.dir = "C:/Users/IMC Platform laptop/Users2/Tess/SteinbockCellSegmentation/220707/220707_workflowr")
+
+#Set cache
+knitr::opts_chunk$set(autodep = TRUE, cache = TRUE, cache.lazy = FALSE)
+
+#To make figures
+knitr::opts_chunk$set(dev = "png")
+```
+
+```{css, echo=FALSE}
+.scroll-100 {
+  max-height: 100px;
+  overflow-y: auto;
+  background-color: inherit;
+}
+```
+
+### Load packages 
+
+```{r load-libs, message=FALSE}
+library(SpatialExperiment)
+library(Rphenograph)
+library(igraph)
+library(dittoSeq)
+library(viridis)
+library(bluster)
+library(BiocParallel)
+library(ggplot2)
+library(scran)
+library(CATALYST)
+library(kohonen)
+library(ConsensusClusterPlus)
+library(patchwork)
+library(pheatmap)
+library(gridExtra)
+library(cytomapper)
+library(Rphenoannoy)
+library(SingleCellExperiment)
+library(caret)
+library(ggridges)
+```
+
+### Load data
+
+```{r load data}
+spe <- readRDS(file.path("output", "spe2.rds"))
+
+# Sample cells
+cur_cells <- sample(seq_len(ncol(spe)), 2000)
+```
+
+### Dimensionality reduction: Rphenoannoy
+
+```{r Rphenoannoy}
+mat <- t(assay(spe, "exprs"))
+
+out <- Rphenoannoy(mat, k = 10)
+
+clusters <- factor(membership(out[[2]]))
+
+spe$pg_clusters <- clusters
+
+dittoDimPlot(spe, var = "pg_clusters", 
+             reduction.use = "UMAP", size = 0.2,
+             do.label = TRUE) +
+    ggtitle("Phenoannoy clusters expression on UMAP")
+```
+
+# Heatmap with phenoannoy clusters:
+
+```{r create heatmap with phenoannoy data}
+dittoHeatmap(spe[, cur_cells], 
+             genes = rownames(spe),
+             assay = "exprs", scale = "none",
+             heatmap.colors = viridis(100), 
+             annot.by = c("pg_clusters", "patient_id"),
+             annot.colors = c(dittoColors(1)[1:length(unique(spe$pg_clusters))],
+                              metadata(spe)$color_vectors$patient_id))
+```
+
+### Create a phenoannoy with FastMNN cell integration data 
+
+```{r integrated cell phenoannoy}
+set.seed(322)
+
+mat <- reducedDim(spe, "fastMNN")
+
+out <- Rphenoannoy(mat, k = 10)
+
+clusters <- factor(membership(out[[2]]))
+
+spe$pg_clusters_corrected <- clusters
+
+dittoDimPlot(spe, var = "pg_clusters_corrected", 
+             reduction.use = "UMAP_mnnCorrected", size = 0.2,
+             do.label = TRUE) +
+    ggtitle("Phenoannoy clusters expression on UMAP, integrated cells")
+```
+
+### Heatmap with FastMNN cell integrated phenoannoy
+
+```{r create heatmap with integrated phenoannoy}
+dittoHeatmap(spe[,cur_cells], 
+             genes = rownames(spe),
+             assay = "exprs", scale = "none",
+             heatmap.colors = viridis(100), 
+             annot.by = c("pg_clusters_corrected", "patient_id"),
+             annot.colors = c(dittoColors(1)[1:length(unique(spe$pg_clusters_corrected))],
+                              metadata(spe)$color_vectors$patient_id))
+```
+
+### Shared nearest neighbour graph: This takes a while to run
+
+```{r shared nearest neigbhours graph, eval=FALSE, include=FALSE}
+sam_cells <- sample(seq_len(ncol(spe)), 15000)
+
+mat <- t(assay(spe, "exprs"))
+
+combinations <- clusterSweep(mat[sam_cells,], BLUSPARAM=SNNGraphParam(),
+                             k=c(10L, 20L), 
+                             type = c("rank", "jaccard"), 
+                             cluster.fun=c("walktrap", "louvain"),
+                             BPPARAM = MulticoreParam(RNGseed = 123))
+
+sil <- vapply(as.list(combinations$clusters), 
+              function(x) mean(approxSilhouette(mat[sam_cells,], x)$width), 
+              0)
+
+ggplot(data.frame(method = names(sil),
+                  sil = sil)) +
+    geom_point(aes(method, sil)) +
+    theme_classic(base_size = 15) +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    xlab("Cluster parameter combination") +
+    ylab("Average silhouette width")
+```
+
+### Best value for average silhouette width is louvain rank cluster k=20
+
+### Phenograph with louvain community detection and rank-based weighting of edges (k=20)
+
+```{r louvain phenograph}
+clusters <- clusterCells(spe, 
+                         assay.type = "exprs", 
+                         BLUSPARAM = NNGraphParam(k = 20, 
+                                                  cluster.fun = "louvain",
+                                                  type = "rank",
+                                                  BPPARAM = bpparam()))
+
+spe$nn_clusters <- clusters
+
+dittoDimPlot(spe, var = "nn_clusters", 
+             reduction.use = "UMAP", size = 0.2,
+             do.label = TRUE) +
+    ggtitle("SNN clusters expression on UMAP")
+```
+
+### Heatmap louvain - rank - k=20
+
+```{r heatmap louvain}
+dittoHeatmap(spe[,cur_cells], 
+             genes = rownames(spe),
+             assay = "exprs", scale = "none",
+             heatmap.colors = viridis(100), 
+             annot.by = c("nn_clusters", "patient_id"),
+             annot.colors = c(dittoColors(1)[1:length(unique(spe$nn_clusters))],
+                              metadata(spe)$color_vectors$patient_id))
+```
+
+### Phenograph louvain with integrated cells
+
+```{r louvain integrated phenograph}
+clusters <- clusterCells(spe, 
+                         use.dimred = "fastMNN", 
+                         BLUSPARAM = NNGraphParam(k = 20, 
+                                                  cluster.fun = "louvain",
+                                                  type = "rank",
+                                                  BPPARAM = bpparam()))
+
+spe$nn_clusters_corrected <- clusters
+
+dittoDimPlot(spe, var = "nn_clusters_corrected", 
+             reduction.use = "UMAP_mnnCorrected", size = 0.2,
+             do.label = TRUE) +
+    ggtitle("SNN clusters expression on UMAP, integrated cells")
+```
+
+### Heatmap louvain integrated phenograph
+
+```{r heatmap louvain integrated}
+dittoHeatmap(spe[,cur_cells], 
+             genes = rownames(spe),
+             assay = "exprs", scale = "none",
+             heatmap.colors = viridis(100), 
+             annot.by = c("nn_clusters_corrected", "patient_id"),
+             annot.colors = c(dittoColors(1)[1:length(unique(spe$nn_clusters_corrected))],
+                              metadata(spe)$color_vectors$patient_id))
+```
+
+### flowSOM/Catalyst phenographs
+
+```{r CATALYST phenograph}
+# Run FlowSOM and ConsensusClusterPlus clustering
+spe <- CATALYST::cluster(spe, 
+               features = rownames(spe),
+               maxK = 30)
+
+# Assess cluster stability
+delta_area(spe)
+```
+
+### Cell clusters with meta12
+
+```{r metaclustering}
+spe$som_clusters <- cluster_ids(spe, "meta12")
+
+dittoDimPlot(spe, var = "som_clusters", 
+             reduction.use = "UMAP", size = 0.2,
+             do.label = TRUE) +
+    ggtitle("SOM clusters expression on UMAP")
+```
+
+### Heatmap
+
+```{r heatmap metaclusters}
+dittoHeatmap(spe[,cur_cells], 
+             genes = rownames(spe),
+             assay = "exprs", scale = "none",
+             heatmap.colors = viridis(100), 
+             annot.by = c("som_clusters", "patient_id"),
+             annot.colors = c(dittoColors(1)[1:length(unique(spe$som_clusters))],
+                              metadata(spe)$color_vectors$patient_id))
+```
+
+### Clustering with bluster package
+
+```{r bluster clustering}
+# Select integrated cells
+mat <- reducedDim(spe, "fastMNN")
+
+# Perform SOM clustering
+som.out <- clusterRows(mat, SomParam(100), full = TRUE)
+
+# Cluster the 100 SOM codes into larger clusters
+ccp <- ConsensusClusterPlus(t(som.out$objects$som$codes[[1]]),
+                            maxK = 30,
+                            reps = 100, 
+                            distance = "euclidean", 
+                            seed = 220410, 
+                            plot = NULL)
+
+CATALYST:::.plot_delta_area(ccp)
+```
+
+### Link ConsensusClusterPlus clusters with SOM codes and save in object
+
+```{r bluster corrected}
+som.cluster <- ccp[[16]][["consensusClass"]][som.out$clusters]
+spe$som_clusters_corrected <- as.factor(som.cluster)
+
+dittoDimPlot(spe, var = "som_clusters_corrected", 
+             reduction.use = "UMAP_mnnCorrected", size = 0.2,
+             do.label = TRUE) +
+    ggtitle("Phenograph clusters expression on UMAP, integrated cells")
+```
+
+### Heatmap with SOM
+
+```{r heatmap bluster corrected}
+dittoHeatmap(spe[,cur_cells], 
+             genes = rownames(spe),
+             assay = "exprs", scale = "none",
+             heatmap.colors = viridis(100), 
+             annot.by = c("som_clusters_corrected", "patient_id"),
+             annot.colors = c(dittoColors(1)[1:length(unique(spe$som_clusters_corrected))],
+                              metadata(spe)$color_vectors$patient_id))
+```
+
+### Comparison between clustering approaches
+
+```{r approach comparison}
+tab1 <- table(paste("Rphenograph", spe$pg_clusters), 
+              paste("SNN", spe$nn_clusters))
+tab2 <- table(paste("Rphenograph", spe$pg_clusters), 
+              paste("SOM", spe$som_clusters))
+tab3 <- table(paste("SNN", spe$nn_clusters), 
+              paste("SOM", spe$som_clusters))
+
+ph1 <- pheatmap(log10(tab1 + 10), color = viridis(100))[[4]]
+
+ph2 <- pheatmap(log10(tab2 + 10), color = viridis(100))[[4]]
+
+ph3 <- pheatmap(log10(tab3 + 10), color = viridis(100))[[4]]
+
+grid.arrange(ph1, ph2, ph3, nrow = 1, ncol = 3)
+```
+
+### Comparison between clustering approaches: integrated cells
+
+```{r approach comparison cell integration}
+tab1 <- table(paste("Rphenograph", spe$pg_clusters_corrected), 
+              paste("SNN", spe$nn_clusters_corrected))
+tab2 <- table(paste("Rphenograph", spe$pg_clusters_corrected), 
+              paste("SOM", spe$som_clusters_corrected))
+tab3 <- table(paste("SNN", spe$nn_clusters_corrected), 
+              paste("SOM", spe$som_clusters_corrected))
+
+ph1 <- pheatmap(log10(tab1 + 10), color = viridis(100))[[4]]
+
+ph2 <- pheatmap(log10(tab2 + 10), color = viridis(100))[[4]]
+
+ph3 <- pheatmap(log10(tab3 + 10), color = viridis(100))[[4]]
+
+grid.arrange(ph1, ph2, ph3, nrow = 1, ncol = 3)
+```
+
+### Save data
+
+```{r save spe3}
+saveRDS(spe, file.path("output", "spe3.rds"))
+```
+
+

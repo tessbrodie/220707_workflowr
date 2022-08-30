@@ -1,0 +1,295 @@
+---
+title: "IMC data analysis workflow"
+author: "Tess Brodie"
+date: "University of Bern, DBMR, Visceral and Transplantation Surgery lab"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Image visualization
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#Important - this path is relative to your dataset, set working directory
+knitr::opts_knit$set(root.dir = "C:/Users/IMC Platform laptop/Users2/Tess/SteinbockCellSegmentation/220707/220707_workflowr")
+
+#Set cache
+knitr::opts_chunk$set(autodep = TRUE, cache = TRUE, cache.lazy = FALSE)
+
+#To make figures
+knitr::opts_chunk$set(dev = "png")
+```
+
+```{css, echo=FALSE}
+.scroll-100 {
+  max-height: 100px;
+  overflow-y: auto;
+  background-color: inherit;
+}
+```
+
+### Load packages 
+
+```{r load-libs, message=FALSE}
+library(SpatialExperiment)
+library(cytomapper)
+library(cowplot)
+library(gridGraphics)
+```
+
+### load data
+
+```{r load data}
+spe <- readRDS(file.path("output", "spe4.rds"))
+
+images <- readRDS("data/images.rds")
+masks <- readRDS("data/masks.rds")
+
+
+# Sample cells
+cur_cells <- sample(seq_len(ncol(spe)), 2000)
+
+# Sample images (this was edited because we changed sample ID names to numbers)
+cur_id <- sample(c(1:6), 3)
+cur_images <- images[cur_id,]
+cur_masks <- masks[cur_id,]
+
+```
+
+### Pixel visualization (Targets with dashes need quotes)
+```{r tissue_target}
+plotPixels(images, 
+           colour_by = "E-cadherin",
+           bcg = list("E-cadherin" = c(0, 10, 1)))
+```
+
+```{r tissue_targets}
+plotPixels(images, 
+           colour_by = c("E-cadherin","CD206", "HNFa", "CD3e", "CD19", "CD31"),
+           bcg = list("E-cadherin" = c(0, 10, 1),
+                      CD206 = c(0, 10, 1),
+                      HNFa = c(0, 10, 1),
+                      CD3e = c(0, 10, 1),
+                      CD19 = c(0, 10, 1),
+                      CD31 = c(0, 10, 1)))
+```
+
+```{r tissue_targets_colorchoose}
+plotPixels(images, 
+           colour_by = c("CD206", "HNFa", "E-cadherin"),
+           bcg = list(CD206 = c(0, 20, 1),
+                      HNFa = c(0, 20, 1),
+                      "E-cadherin" = c(0, 20, 1)),
+           colour = list(CD206 = c("black", "burlywood1"),
+                         HNFa = c("black", "cyan2"),
+                         "E-cadherin" = c("black", "firebrick1")))
+```
+
+```{r tissue_targets_normed_acrossall}
+# 0 - 1 channel scaling across all images
+norm_images <- normalize(images)
+
+# Clip channel at 0.2
+norm_images <- normalize(norm_images, inputRange = c(0, 0.2))
+
+plotPixels(norm_images, 
+           colour_by = c("E-cadherin","CD206", "HNFa", "CD3e", "CD19", "CD31"))
+```
+
+```{r tissue_targets_normed_perimage}
+# 0 - 1 channel scaling per image
+norm_images <- normalize(images, separateImages = TRUE)
+
+# Clip channel at 0.2
+norm_images <- normalize(norm_images, inputRange = c(0, 0.2))
+
+plotPixels(norm_images, 
+           colour_by = c("E-cadherin","CD206", "HNFa", "CD3e", "CD19", "CD31"))
+```
+
+```{r tissue_targets_normed_manual}
+# 0 - 1 channel scaling per image
+norm_images <- normalize(images, 
+                         separateImages = TRUE,
+                         inputRange = list("E-cadherin" = c(0, 10), 
+                                           CD206 = c(0, 10),
+                                           HNFa = c(0, 10),
+                                           CD3e = c(0, 10),
+                                           CD19 = c(0, 10),
+                                           CD31 = c(0, 10)))
+
+plotPixels(norm_images, 
+           colour_by = c("E-cadherin","CD206", "HNFa", "CD3e", "CD19", "CD31"))
+```
+
+### Cell type overlays
+
+```{r celltype_overlay}
+plotCells(masks,
+          object = spe, 
+          cell_id = "ObjectNumber", img_id = "sample_id",
+          colour_by = "celltype")
+```
+
+```{r celltype_overlay_choosecolors}
+plotCells(masks,
+          object = spe, 
+          cell_id = "ObjectNumber", img_id = "sample_id",
+          colour_by = "celltype")
+          #colour = list(celltype = metadata(spe)$color_vectors$celltype))
+```
+
+```{r celltype_overlay_onetargetred}
+KC <- spe[,spe$celltype == "KC"]
+
+plotCells(masks,
+          object = KC, 
+          cell_id = "ObjectNumber", img_id = "sample_id",
+          colour_by = "celltype",
+          colour = list(celltype = c(KC = "red")),
+          missing_colour = "white")
+```
+
+### Cell area overlay
+
+```{r area_overlay}
+plotCells(masks,
+          object = spe, 
+          cell_id = "ObjectNumber", img_id = "sample_id",
+          colour_by = "area")
+```
+
+### Asinh-transformed mean pixel intensities
+
+```{r meanpixel_overlay_onetarget}
+plotCells(masks,
+          object = spe, 
+          cell_id = "ObjectNumber", img_id = "sample_id",
+          colour_by = "E-cadherin",
+          exprs_values = "exprs")
+```
+
+```{r meanpixel_overlay_multitarget}
+plotCells(masks,
+          object = spe, 
+          cell_id = "ObjectNumber", img_id = "sample_id",
+          colour_by = c("E-cadherin","CD206", "HNFa", "CD3e", "CD19", "CD31"),
+          exprs_values = "exprs")
+```
+
+```{r meanpixel_overlay_multitarget_manualcolors}
+plotCells(masks,
+          object = spe, 
+          cell_id = "ObjectNumber", img_id = "sample_id",
+          colour_by = c("E-cadherin","CD206", "HNFa"),
+          exprs_values = "exprs",
+          colour = list("E-cadherin" = c("black", "burlywood1"),
+                          CD206 = c("black", "cyan2"),
+                          HNFa = c("black", "firebrick1")))
+```
+
+### Outlining cells on images
+
+```{r celloutline_overlay_all}
+plotPixels(image = images,
+           mask = masks,
+           object = spe, 
+           cell_id = "ObjectNumber", img_id = "sample_id",
+           colour_by = c("E-cadherin","CD206", "HNFa"),
+           outline_by = "celltype",
+                      bcg = list("E-cadherin" = c(0, 20, 1),
+                      CD206 = c(0, 20, 1),
+                      HNFa = c(0, 20, 1)),
+           #colour = list(celltype = metadata(spe)$color_vectors$celltype),
+           thick = TRUE)
+```
+
+```{r celloutline_overlay_onecelltype}
+CD8 <- spe[,spe$celltype == "CD8"]
+
+plotPixels(image = images,
+           mask = masks,
+           object = CD8, 
+           cell_id = "ObjectNumber", img_id = "sample_id",
+           colour_by = c("CD3e", "CD8a"),
+           outline_by = "celltype",
+                      bcg = list(CD3e = c(0, 20, 1),
+                      CD8a = c(0, 20, 1)),
+           colour = list(celltype = c("CD8" = "white")),
+           thick = TRUE)
+```
+
+### Adjusting plot annotation (need to add conditions for this to work)
+
+
+```{r adding condition}
+mcols(images)$condition <- c("WT", "WT", "NAFLD", "NAFLD", "NASH", "NASH")
+mcols(masks)$condition <- c("WT", "WT", "NAFLD", "NAFLD", "NASH", "NASH")
+```
+
+
+```{r target_overlay_annotated, fig.width=13, fig.height=10}
+plotPixels(images, 
+           colour_by = c("E-cadherin","CD206", "HNFa", "CD3e", "CD19", "CD31"),
+           bcg = list("E-cadherin" = c(0, 20, 1),
+                      CD206 = c(0, 10, 1),
+                      HNFa = c(0, 10, 1),
+                      CD3e = c(0, 10, 1),
+                      CD19 = c(0, 10, 1),
+                      CD31 = c(0, 10, 1)),
+           scale_bar = list(length = 100,
+                            label = expression("100 " ~ mu * "m"),
+                            cex = 0.7, 
+                            lwidth = 10,
+                            colour = "grey",
+                            position = "bottomleft",
+                            margin = c(5,5),
+                            frame = 3),
+           image_title = list(text = mcols(images)$condition,
+                              position = "topright",
+                              colour = "grey",
+                              margin = c(5,5),
+                              font = .5,
+                              cex = 2),
+           legend = list(colour_by.title.cex = 0.7,
+                         margin = 10),
+           margin = 40)
+```
+
+### Display individual images
+
+```{r celltype_overlay_oneimage}
+plotCells(masks,
+          object = spe, 
+          cell_id = "ObjectNumber", img_id = "sample_id",
+          colour_by = "celltype",
+          #colour = list(celltype = metadata(spe)$color_vectors$celltype),
+          display = "single",
+          legend = NULL)
+```
+
+### Save and return images
+
+```{r}
+out1 <- plotCells(masks,
+                  object = spe, 
+                  cell_id = "ObjectNumber", img_id = "sample_id",
+                  colour_by = "celltype",
+                  #colour = list(celltype = metadata(spe)$color_vectors$celltype),
+                  return_plot = TRUE)
+
+out2 <- plotCells(masks,
+                  object = spe, 
+                  cell_id = "ObjectNumber", img_id = "sample_id",
+                  colour_by = c("HNFa", "CD3e", "CD206"),
+                  exprs_values = "exprs",
+                  return_plot = TRUE)
+
+p1 <- ggdraw(out1$plot, clip = "on")
+p2 <- ggdraw(out2$plot, clip = "on")
+
+plot_grid(p1, p2)
+```
+

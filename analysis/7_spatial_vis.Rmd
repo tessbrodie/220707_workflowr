@@ -1,0 +1,486 @@
+---
+title: "IMC data analysis workflow"
+author: "Tess Brodie"
+date: "University of Bern, DBMR, Visceral and Transplantation Surgery lab"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Spatial analysis
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#Important - this path is relative to your dataset, set working directory
+knitr::opts_knit$set(root.dir = "C:/Users/IMC Platform laptop/Users2/Tess/SteinbockCellSegmentation/220707/220707_workflowr")
+
+#Set cache
+knitr::opts_chunk$set(autodep = TRUE, cache = TRUE, cache.lazy = FALSE)
+
+#To make figures
+knitr::opts_chunk$set(dev = "png")
+```
+
+```{css, echo=FALSE}
+.scroll-100 {
+  max-height: 100px;
+  overflow-y: auto;
+  background-color: inherit;
+}
+```
+
+### Load packages 
+
+```{r load-libs, message=FALSE}
+library(SpatialExperiment)
+library(imcRtools)
+library(ggplot2)
+library(viridis)
+library(igraph)
+library(pheatmap)
+library(tidyverse)
+library(lisaClust)
+library(spicyR)
+library(circlize)
+library(RColorBrewer)
+library(cytomapper)
+library(patchwork)
+library(tidyverse)
+library(scales)
+```
+
+### Load data
+
+```{r load data}
+spe <- readRDS(file.path("output", "spe4.rds"))
+
+```
+
+### Spatial interaction graphs
+
+```{r build_spatial_graph}
+spe <- buildSpatialGraph(spe, img_id = "sample_id", type = "knn", k = 20)
+spe <- buildSpatialGraph(spe, img_id = "sample_id", type = "expansion", threshold = 20)
+spe <- buildSpatialGraph(spe, img_id = "sample_id", type = "delaunay", max_dist = 50)
+
+colPairNames(spe)
+```
+
+```{r steinbock_interaction}
+
+# steinbock interaction graph 
+plotSpatial(spe[,spe$sample_id == "1"], 
+            node_color_by = "celltype", 
+            img_id = "sample_id", 
+            draw_edges = TRUE, 
+            colPairName = "neighborhood", 
+            nodes_first = FALSE, 
+            edge_color_fix = "grey") + 
+    #scale_color_manual(values = metadata(spe)$color_vectors$celltype) +
+    ggtitle("steinbock interaction graph")
+```
+
+```{r KNN_interaction}
+
+# knn interaction graph 
+plotSpatial(spe[,spe$sample_id == "1"], 
+            node_color_by = "celltype", 
+            img_id = "sample_id", 
+            draw_edges = TRUE, 
+            colPairName = "knn_interaction_graph", 
+            nodes_first = FALSE,
+            edge_color_fix = "grey") + 
+    #scale_color_manual(values = metadata(spe)$color_vectors$celltype) +
+    ggtitle("knn interaction graph")
+```
+
+```{r expansion_interaction}
+
+# expansion interaction graph 
+plotSpatial(spe[,spe$sample_id == "1"], 
+            node_color_by = "celltype", 
+            img_id = "sample_id", 
+            draw_edges = TRUE, 
+            colPairName = "expansion_interaction_graph", 
+            nodes_first = FALSE, 
+            directed = FALSE,
+            edge_color_fix = "grey") + 
+    #scale_color_manual(values = metadata(spe)$color_vectors$celltype) +
+    ggtitle("expansion interaction graph")
+```
+
+```{r delaunay_interaction}
+# delaunay interaction graph 
+plotSpatial(spe[,spe$sample_id == "1"], 
+            node_color_by = "celltype", 
+            img_id = "sample_id", 
+            draw_edges = TRUE, 
+            colPairName = "delaunay_interaction_graph", 
+            nodes_first = FALSE,
+            edge_color_fix = "grey") + 
+    #scale_color_manual(values = metadata(spe)$color_vectors$celltype) +
+    ggtitle("delaunay interaction graph")
+```
+
+```{r interaction_targetexprs}
+plotSpatial(spe[,spe$sample_id == "1"], 
+            node_color_by = "E-cadherin", 
+            assay_type = "exprs",
+            img_id = "sample_id", 
+            draw_edges = TRUE, 
+            colPairName = "expansion_interaction_graph", 
+            nodes_first = FALSE, 
+            node_size_by = "area", 
+            directed = FALSE,
+            edge_color_fix = "grey") + 
+    scale_size_continuous(range = c(0.1, 2)) +
+    ggtitle("E-cadherin expression")
+```
+
+### Plot cell types
+
+```{r plot_cell_type_all}
+plotSpatial(spe, 
+            node_color_by = "celltype", 
+            img_id = "sample_id", 
+            node_size_fix = 0.5) 
+    #scale_color_manual(values = metadata(spe)$color_vectors$celltype)
+```
+
+### Spatial community analysis
+
+```{r community_setup}
+set.seed(20220718)
+
+# Spatial community detection - tumor
+#tumor_spe <- spe[,spe$celltype == "Tumor"]
+#We do all and do not separate regions like they do
+
+gr <- graph_from_data_frame(as.data.frame(colPair(spe, "neighborhood")), 
+                            directed = FALSE, 
+                            vertices = data.frame(index = seq_len(ncol(spe))))
+
+cl_comm <- cluster_louvain(gr)
+comm <- paste0("Comm_", membership(cl_comm))
+comm[membership(cl_comm) %in% which(sizes(cl_comm) < 10)] <- NA
+names(comm) <- colnames(spe)
+
+# Spatial community detection - non-tumor
+#stroma_spe <- spe[,spe$celltype != "Tumor"]
+
+#gr <- graph_from_data_frame(as.data.frame(colPair(stroma_spe, "neighborhood")), 
+#                            directed = FALSE, 
+#                            vertices = data.frame(index = seq_len(ncol(stroma_spe))))
+
+#cl_comm <- cluster_louvain(gr)
+#comm_stroma <- paste0("Stroma_", membership(cl_comm))
+#comm_stroma[membership(cl_comm) %in% which(sizes(cl_comm) < 10)] <- NA
+#names(comm_stroma) <- colnames(stroma_spe)
+
+#comm <- c(comm_tumor, comm_stroma)
+
+spe$spatial_community <- comm[colnames(spe)]
+```
+
+```{r community_plot}
+plotSpatial(spe, 
+            node_color_by = "spatial_community", 
+            img_id = "sample_id", 
+            node_size_fix = 0.5) +
+    theme(legend.position = "none") +
+    ggtitle("Spatial communities") +
+    scale_color_manual(values = rev(colors()))
+```
+
+```{r community_heatmap}
+for_plot <- prop.table(table(spe$spatial_community, spe$celltype), margin = 1)
+
+pheatmap(for_plot, color = viridis(100), show_rownames = FALSE)
+```
+
+### Cellular neighborhood analysis
+
+```{r knn_interaction_graph}
+# By celltypes
+spe <- aggregateNeighbors(spe, colPairName = "knn_interaction_graph", 
+                          aggregate_by = "metadata", count_by = "celltype")
+
+set.seed(20220718)
+
+cn_1 <- kmeans(spe$aggregatedNeighbors, centers = 6)
+spe$cn_celltypes <- as.factor(cn_1$cluster)
+
+plotSpatial(spe, 
+            node_color_by = "cn_celltypes", 
+            img_id = "sample_id", 
+            node_size_fix = 0.5) +
+    scale_color_brewer(palette = "Set3")
+```
+
+```{r knn_interaction_heatmap}
+for_plot <- colData(spe) %>% as_tibble() %>%
+    group_by(cn_celltypes, celltype) %>%
+    summarize(count = n()) %>%
+    mutate(freq = count / sum(count)) %>%
+    pivot_wider(id_cols = cn_celltypes, names_from = celltype, 
+                values_from = freq, values_fill = 0) %>%
+    ungroup() %>%
+    select(-cn_celltypes)
+
+pheatmap(for_plot, color = colorRampPalette(c("dark blue", "white", "dark red"))(100), 
+         scale = "column")
+```
+
+```{r neighborhoods_by_exprs}
+# By expression
+spe <- aggregateNeighbors(spe, colPairName = "knn_interaction_graph", 
+                          aggregate_by = "expression", assay_type = "exprs",
+                          subset_row = rowData(spe)$use_channel)
+cn_2 <- kmeans(spe$mean_aggregatedExpression, centers = 6)
+spe$cn_expression <- as.factor(cn_2$cluster)
+
+plotSpatial(spe, 
+            node_color_by = "cn_expression", 
+            img_id = "sample_id", 
+            node_size_fix = 0.5) +
+    scale_color_brewer(palette = "Set3")
+```
+
+```{r neighborhoods_by_expression_heatmap}
+for_plot <- colData(spe) %>% as_tibble() %>%
+    group_by(cn_expression, celltype) %>%
+    summarize(count = n()) %>%
+    mutate(freq = count / sum(count)) %>%
+    pivot_wider(id_cols = cn_expression, names_from = celltype, 
+                values_from = freq, values_fill = 0) %>%
+    ungroup() %>%
+    select(-cn_expression)
+
+pheatmap(for_plot, color = colorRampPalette(c("dark blue", "white", "dark red"))(100), 
+         scale = "column")
+```
+
+```{r lisaClust_setup}
+cells <- data.frame(row.names = colnames(spe))
+cells$ObjectNumber <- spe$ObjectNumber
+cells$ImageNumber <- spe$sample_id
+cells$AreaShape_Center_X <- spatialCoords(spe)[,"Pos_X"]
+cells$AreaShape_Center_Y <- spatialCoords(spe)[,"Pos_Y"]
+cells$cellType <- spe$celltype
+
+lisa_sc <- SegmentedCells(cells, cellProfiler = TRUE)
+
+lisa_sc
+```
+
+```{r lisaClust_plot}
+
+lisaCurves <- lisa(lisa_sc, Rs = c(10, 20, 50))
+
+# Set NA to 0
+lisaCurves[is.na(lisaCurves)] <- 0
+
+lisa_clusters <- kmeans(lisaCurves, centers = 6)$cluster
+
+spe$lisa_clusters <- as.factor(lisa_clusters)
+
+plotSpatial(spe, 
+            node_color_by = "lisa_clusters", 
+            img_id = "sample_id", 
+            node_size_fix = 0.5) +
+    scale_color_brewer(palette = "Set3")
+```
+
+```{r lisaClust_heatmap}
+for_plot <- colData(spe) %>% as_tibble() %>%
+    group_by(lisa_clusters, celltype) %>%
+    summarize(count = n()) %>%
+    mutate(freq = count / sum(count)) %>%
+    pivot_wider(id_cols = lisa_clusters, names_from = celltype, 
+                values_from = freq, values_fill = 0) %>%
+    ungroup() %>%
+    select(-lisa_clusters)
+
+pheatmap(for_plot, color = colorRampPalette(c("dark blue", "white", "dark red"))(100), 
+         scale = "column")
+```
+
+### Spatial context analysis 
+
+```{r spatial_context_analysis}
+# Generate k-nearest neighbor graph for SC detection (k=40) 
+spe <- buildSpatialGraph(spe, img_id = "sample_id", 
+                         type = "knn", 
+                         name = "knn_spatialcontext_graph", 
+                         k = 40)
+
+# Aggregate based on clustered_neighbors
+spe <- aggregateNeighbors(spe, 
+                          colPairName = "knn_spatialcontext_graph",
+                          aggregate_by = "metadata",
+                          count_by = "cn_celltypes",
+                          name = "aggregatedNeighborhood")
+
+# Detect spatial contexts
+spe <- detectSpatialContext(spe, 
+                            entry = "aggregatedNeighborhood",
+                            threshold = 0.90,
+                            name = "spatial_context")
+
+# Define SC color scheme
+col_SC <- setNames(colorRampPalette(brewer.pal(9, "Paired"))(length(unique(spe$spatial_context))), 
+                   sort(unique(spe$spatial_context)))
+
+# Visualize spatial contexts on images
+plotSpatial(spe, 
+            node_color_by = "spatial_context", 
+            img_id = "sample_id", 
+            node_size_fix = 0.5, 
+            colPairName = "knn_spatialcontext_graph") +
+    scale_color_manual(values = col_SC)
+```
+
+```{r compare_CN_SC}
+
+# Compare CN and SC for one patient 
+p1 <- plotSpatial(spe[,spe$sample_id == "1"], 
+            node_color_by = "cn_celltypes", 
+            img_id = "sample_id", 
+            node_size_fix = 0.5, 
+            colPairName = "knn_interaction_graph") +
+    scale_color_brewer(palette = "Set3")
+
+p2 <- plotSpatial(spe[,spe$sample_id == "1"], 
+            node_color_by = "spatial_context", 
+            img_id = "sample_id", 
+            node_size_fix = 0.5, 
+            colPairName = "knn_spatialcontext_graph") +
+    scale_color_manual(values = col_SC, limits = force)
+
+p1 + p2
+```
+
+```{r filter_SC}
+## Filter spatial contexts
+# By number of group entries
+spe <- filterSpatialContext(spe, 
+                            entry = "spatial_context",
+                            group_by = "patient_id", 
+                            group_threshold = 3)
+
+plotSpatial(spe, 
+            node_color_by = "spatial_context_filtered", 
+            img_id = "sample_id", 
+            node_size_fix = 0.5, 
+            colPairName = "knn_spatialcontext_graph") +
+    scale_color_manual(values = col_SC, limits = force)
+```
+
+```{r filter_SC_bycellnumber}
+# By number of group entries and total number of cells
+spe <- filterSpatialContext(spe, 
+                            entry = "spatial_context",
+                            group_by = "patient_id", 
+                            group_threshold = 3,
+                            cells_threshold = 100)
+
+plotSpatial(spe, 
+            node_color_by = "spatial_context_filtered", 
+            img_id = "sample_id", 
+            node_size_fix = 0.5, 
+            colPairName = "knn_spatialcontext_graph") +
+    scale_color_manual(values = col_SC, limits = force)
+```
+
+```{r sc_graphs}
+## Plot spatial context graph 
+
+# Colored by name and size by n_cells
+plotSpatialContext(spe, 
+                   entry = "spatial_context_filtered",
+                   group_by = "sample_id",
+                   node_color_by = "name",
+                   node_size_by = "n_cells",
+                   node_label_color_by = "name")
+```
+
+```{r SC_graphs_ncellsngroup_color}
+# Colored by n_cells and size by n_group                   
+plotSpatialContext(spe, 
+                   entry = "spatial_context_filtered",
+                   group_by = "sample_id",
+                   node_color_by = "n_cells",
+                   node_size_by = "n_group",
+                   node_label_color_by = "n_cells") +
+  scale_color_viridis()
+```
+
+### Patch detection (not working?)
+
+```{r patch detection}
+spe <- patchDetection(spe, 
+                      patch_cells = spe$celltype == "LSEC",
+                      img_id = "sample_id",
+                      expand_by = 1,
+                      min_patch_size = 10,
+                      colPairName = "neighborhood")
+
+plotSpatial(spe, 
+            node_color_by = "patch_id", 
+            img_id = "sample_id", 
+            node_size_fix = 0.5) +
+    theme(legend.position = "none") +
+    scale_color_manual(values = colors())
+```
+
+```{r T cell infiltration}
+colData(spe) %>% as_tibble() %>%
+    group_by(patch_id, sample_id) %>%
+    summarize(Tcell_count = sum(celltype == "CD8" | celltype == "CD4"),
+              patch_size = n(),
+              Tcell_freq = Tcell_count / patch_size) %>%
+    ggplot() +
+        geom_point(aes(log10(patch_size), Tcell_freq, color = sample_id)) +
+    theme_classic()
+```
+
+### Interaction analysis 
+
+```{r interactions_setup}
+out <- testInteractions(spe, 
+                        group_by = "sample_id",
+                        label = "celltype", 
+                        colPairName = "neighborhood")
+
+head(out)
+```
+
+```{r interactions_heatmap}
+
+out %>% as_tibble() %>%
+    group_by(from_label, to_label) %>%
+    summarize(sum_sigval = sum(sigval, na.rm = TRUE)) %>%
+    ggplot() +
+        geom_tile(aes(from_label, to_label, fill = sum_sigval)) +
+        scale_fill_gradient2(low = muted("blue"), mid = "white", high = muted("red")) +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r interactions_heatmap_patch}
+out <- testInteractions(spe, 
+                        group_by = "sample_id",
+                        label = "celltype", 
+                        colPairName = "neighborhood",
+                        method = "patch", 
+                        patch_size = 3)
+
+out %>% as_tibble() %>%
+    group_by(from_label, to_label) %>%
+    summarize(sum_sigval = sum(sigval, na.rm = TRUE)) %>%
+    ggplot() +
+        geom_tile(aes(from_label, to_label, fill = sum_sigval)) +
+        scale_fill_gradient2(low = muted("blue"), mid = "white", high = muted("red")) +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
